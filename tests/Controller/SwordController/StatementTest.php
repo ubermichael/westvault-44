@@ -13,22 +13,22 @@ namespace App\Tests\Controller\SwordController;
 use App\Entity\Whitelist;
 
 class StatementTest extends AbstractSwordTestCase {
-    // journal not whitelisted
+    // provider not whitelisted
     public function testStatementNotWhitelisted() : void {
         $this->client->request('GET', '/api/sword/2.0/cont-iri/04F2C06E-35B8-43C1-B60C-1934271B0B7E/F93A8108-B705-4763-A592-B718B00BD4EA/state');
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
         $this->assertStringContainsStringIgnoringCase('Not authorized to request statements.', $this->client->getResponse()->getContent());
     }
 
-    // requested journal uuid does not match deposit uuid.
+    // requested provider uuid does not match deposit uuid.
     public function testStatementMismatch() : void {
         $this->client->request('GET', '/api/sword/2.0/cont-iri/44428B12-CDC4-453E-8157-319004CD8CE6/F93A8108-B705-4763-A592-B718B00BD4EA/state');
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
-        $this->assertStringContainsStringIgnoringCase('Deposit does not belong to journal.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsStringIgnoringCase('Deposit does not belong to provider.', $this->client->getResponse()->getContent());
     }
 
-    // journal uuid unknown.
-    public function testStatementJournalNonFound() : void {
+    // provider uuid unknown.
+    public function testStatementProviderNonFound() : void {
         $this->client->request('GET', '/api/sword/2.0/cont-iri/15827F1C-02BC-4FF2-8C86-D1F01DE8E98B/BFDC45E7-58A8-4C46-B194-E20E040F0BD7/state');
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
         $this->assertStringContainsStringIgnoringCase('object not found', $this->client->getResponse()->getContent());
@@ -43,7 +43,7 @@ class StatementTest extends AbstractSwordTestCase {
 
     public function testStatement() : void {
         $whitelist = new Whitelist();
-        $whitelist->setUuid($this->getReference('journal.1')->getUuid());
+        $whitelist->setUuid($this->getReference('provider.1')->getUuid());
         $whitelist->setComment('b');
         $this->entityManager->persist($whitelist);
         $this->entityManager->flush();

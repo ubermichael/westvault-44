@@ -21,8 +21,8 @@ class EditDepositTest extends AbstractSwordTestCase {
     xmlns:dcterms="http://purl.org/dc/terms/"
     xmlns:pkp="http://pkp.sfu.ca/SWORD">
     <email>foo@example.com</email>
-    <title>Test Data Journal of Testing</title>
-    <pkp:journal_url>http://tdjt.example.com</pkp:journal_url>
+    <title>Test Data Provider of Testing</title>
+    <pkp:provider_url>http://tdjt.example.com</pkp:provider_url>
     <pkp:publisherName>Publisher of Stuff</pkp:publisherName>
     <pkp:publisherUrl>http://publisher.example.com</pkp:publisherUrl>
     <pkp:issn>1234-1234</pkp:issn>
@@ -76,7 +76,7 @@ ENDXML;
         $this->assertSame($depositCount, count($this->entityManager->getRepository('App:Deposit')->findAll()));
     }
 
-    public function testEditDepositJournalMismatch() : void {
+    public function testEditDepositProviderMismatch() : void {
         $depositCount = count($this->entityManager->getRepository('App:Deposit')->findAll());
         $this->client->request(
             'PUT',
@@ -94,7 +94,7 @@ ENDXML;
 
     public function testEditDepositSuccess() : void {
         $whitelist = new Whitelist();
-        $whitelist->setUuid($this->getReference('journal.1')->getUuid());
+        $whitelist->setUuid($this->getReference('provider.1')->getUuid());
         $whitelist->setComment('b');
         $this->entityManager->persist($whitelist);
         $this->entityManager->flush();
@@ -118,6 +118,6 @@ ENDXML;
             'depositUuid' => strtoupper('d38e7ecb-7d7e-408d-94b0-b00d434fdbd2'),
         ]);
         $this->assertSame('55CA6286E3E4F4FBA5D0448333FA99FC5A404A73', $deposit->getChecksumValue());
-        $this->assertSame('depositedByJournal', $deposit->getState());
+        $this->assertSame('depositedByProvider', $deposit->getState());
     }
 }

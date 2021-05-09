@@ -40,7 +40,7 @@
                     {% for deposit in deposits %}
                         <tr>
                             <td>
-                                <a href="{{ path('deposit_show', { 'id': deposit.id, 'journalId': deposit.journal.id }) }}">
+                                <a href="{{ path('deposit_show', { 'id': deposit.id, 'providerId': deposit.provider.id }) }}">
                                     {{ deposit.depositUuid }}
                                 </a>
                             </td>

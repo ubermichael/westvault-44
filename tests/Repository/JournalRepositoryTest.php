@@ -10,54 +10,54 @@ declare(strict_types=1);
 
 namespace App\Tests\Repository;
 
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\Entity\Blacklist;
-use App\Entity\Journal;
+use App\Entity\Provider;
 use App\Entity\Whitelist;
-use App\Repository\JournalRepository;
+use App\Repository\ProviderRepository;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
 /**
- * Description of JournalRepositoryTest.
+ * Description of ProviderRepositoryTest.
  */
-class JournalRepositoryTest extends ControllerBaseCase {
+class ProviderRepositoryTest extends ControllerBaseCase {
     /**
-     * @return JournalRepository
+     * @return ProviderRepository
      */
     private $repo;
 
     protected function fixtures() : array {
         return [
-            JournalFixtures::class,
+            ProviderFixtures::class,
         ];
     }
 
-    public function testGetJournalsToPingNoListed() : void {
-        $this->assertSame(4, count($this->repo->getJournalsToPing()));
+    public function testGetProvidersToPingNoListed() : void {
+        $this->assertSame(4, count($this->repo->getProvidersToPing()));
     }
 
-    public function testGetJournalsToPingListed() : void {
+    public function testGetProvidersToPingListed() : void {
         $whitelist = new Whitelist();
-        $whitelist->setUuid(JournalFixtures::UUIDS[0]);
+        $whitelist->setUuid(ProviderFixtures::UUIDS[0]);
         $whitelist->setComment('Test');
         $this->entityManager->persist($whitelist);
 
         $blacklist = new Blacklist();
-        $blacklist->setUuid(JournalFixtures::UUIDS[1]);
+        $blacklist->setUuid(ProviderFixtures::UUIDS[1]);
         $blacklist->setComment('Test');
         $this->entityManager->persist($blacklist);
 
         $this->entityManager->flush();
 
-        $this->assertSame(2, count($this->repo->getJournalsToPing()));
+        $this->assertSame(2, count($this->repo->getProvidersToPing()));
     }
 
-    public function testGetJournalsToPingPingErrors() : void {
-        $journal = $this->entityManager->find(Journal::class, 1);
-        $journal->setStatus('ping-error');
+    public function testGetProvidersToPingPingErrors() : void {
+        $provider = $this->entityManager->find(Provider::class, 1);
+        $provider->setStatus('ping-error');
         $this->entityManager->flush();
 
-        $this->assertSame(3, count($this->repo->getJournalsToPing()));
+        $this->assertSame(3, count($this->repo->getProvidersToPing()));
     }
 
     /**
@@ -83,6 +83,6 @@ class JournalRepositoryTest extends ControllerBaseCase {
 
     protected function setup() : void {
         parent::setUp();
-        $this->repo = $this->entityManager->getRepository(Journal::class);
+        $this->repo = $this->entityManager->getRepository(Provider::class);
     }
 }

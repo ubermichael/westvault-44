@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Deposit;
-use App\Entity\Journal;
+use App\Entity\Provider;
 use App\Entity\TermOfUse;
 use App\Services\BlackWhiteList;
 use App\Services\DepositBuilder;
-use App\Services\JournalBuilder;
+use App\Services\ProviderBuilder;
 use App\Utilities\Namespaces;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -97,12 +97,12 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
     }
 
     /**
-     * Check if a journal's uuid is whitelised or blacklisted.
+     * Check if a provider's uuid is whitelised or blacklisted.
      *
      * The rules are:
      *
-     * If the journal uuid is whitelisted, return true
-     * If the journal uuid is blacklisted, return false
+     * If the provider uuid is whitelisted, return true
+     * If the provider uuid is blacklisted, return false
      * Return the pln_accepting parameter from parameters.yml
      *
      * @param string $uuid
@@ -128,11 +128,11 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
      *
      * @return string
      */
-    private function getNetworkMessage(Journal $journal) {
-        if (null === $journal->getOjsVersion()) {
+    private function getNetworkMessage(Provider $provider) {
+        if (null === $provider->getOjsVersion()) {
             return $this->getParameter('pln.network_default');
         }
-        if (version_compare($journal->getOjsVersion(), $this->getParameter('pln.min_ojs_version'), '>=')) {
+        if (version_compare($provider->getOjsVersion(), $this->getParameter('pln.min_ojs_version'), '>=')) {
             return $this->getParameter('pln.network_accepting');
         }
 
@@ -163,9 +163,9 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
     }
 
     /**
-     * Return a SWORD service document for a journal.
+     * Return a SWORD service document for a provider.
      *
-     * Requires On-Behalf-Of and Journal-Url HTTP headers.
+     * Requires On-Behalf-Of and Provider-Url HTTP headers.
      *
      * @return array
      *
@@ -176,20 +176,20 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
      *  requirements={"_format": "xml"}
      * )
      */
-    public function serviceDocumentAction(Request $request, JournalBuilder $builder) {
+    public function serviceDocumentAction(Request $request, ProviderBuilder $builder) {
         $obh = strtoupper($this->fetchHeader($request, 'On-Behalf-Of'));
-        $journalUrl = $this->fetchHeader($request, 'Journal-Url');
+        $providerUrl = $this->fetchHeader($request, 'Provider-Url');
         $accepting = $this->checkAccess($obh);
-        $this->logger->notice("{$request->getClientIp()} - service document - {$obh} - {$journalUrl} - accepting: " . ($accepting ? 'yes' : 'no'));
+        $this->logger->notice("{$request->getClientIp()} - service document - {$obh} - {$providerUrl} - accepting: " . ($accepting ? 'yes' : 'no'));
         if ( ! $obh) {
             throw new BadRequestHttpException('Missing On-Behalf-Of header.', null, 400);
         }
-        if ( ! $journalUrl) {
-            throw new BadRequestHttpException('Missing Journal-Url header.', null, 400);
+        if ( ! $providerUrl) {
+            throw new BadRequestHttpException('Missing Provider-Url header.', null, 400);
         }
 
-        $journal = $builder->fromRequest($obh, $journalUrl);
-        if ( ! $journal->getTermsAccepted()) {
+        $provider = $builder->fromRequest($obh, $providerUrl);
+        if ( ! $provider->getTermsAccepted()) {
             $accepting = false;
         }
         $this->em->flush();
@@ -200,8 +200,8 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
             'accepting' => $accepting ? 'Yes' : 'No',
             'maxUpload' => $this->getParameter('pln.max_upload'),
             'checksumType' => $this->getParameter('pln.checksum_type'),
-            'message' => $this->getNetworkMessage($journal),
-            'journal' => $journal,
+            'message' => $this->getNetworkMessage($provider),
+            'provider' => $provider,
             'terms' => $termsRepo->getTerms(),
             'termsUpdated' => $termsRepo->getLastUpdated(),
         ];
@@ -215,29 +215,29 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
      * @Route("/col-iri/{uuid}", methods={"POST"}, name="sword_create_deposit", requirements={
      *      "uuid": ".{36}",
      * })
-     * @ParamConverter("journal", options={"mapping": {"uuid"="uuid"}})
+     * @ParamConverter("provider", options={"mapping": {"uuid"="uuid"}})
      */
-    public function createDepositAction(Request $request, Journal $journal, JournalBuilder $journalBuilder, DepositBuilder $depositBuilder) {
-        $accepting = $this->checkAccess($journal->getUuid());
-        if ( ! $journal->getTermsAccepted()) {
+    public function createDepositAction(Request $request, Provider $provider, ProviderBuilder $providerBuilder, DepositBuilder $depositBuilder) {
+        $accepting = $this->checkAccess($provider->getUuid());
+        if ( ! $provider->getTermsAccepted()) {
             $this->accepting = false;
         }
-        $this->logger->notice("{$request->getClientIp()} - create deposit - {$journal->getUuid()} - accepting: " . ($accepting ? 'yes' : 'no'));
+        $this->logger->notice("{$request->getClientIp()} - create deposit - {$provider->getUuid()} - accepting: " . ($accepting ? 'yes' : 'no'));
 
         if ( ! $accepting) {
             throw new BadRequestHttpException('Not authorized to create deposits.', null, 400);
         }
 
         $xml = $this->getXml($request);
-        // Update the journal metadata.
-        $journalBuilder->fromXml($xml, $journal->getUuid());
-        $deposit = $depositBuilder->fromXml($journal, $xml);
+        // Update the provider metadata.
+        $providerBuilder->fromXml($xml, $provider->getUuid());
+        $deposit = $depositBuilder->fromXml($provider, $xml);
         $this->em->flush();
 
         // @var Response
-        $response = $this->statementAction($request, $journal, $deposit);
+        $response = $this->statementAction($request, $provider, $deposit);
         $response->headers->set('Location', $this->generateUrl('sword_statement', [
-            'journal_uuid' => $journal->getUuid(),
+            'provider_uuid' => $provider->getUuid(),
             'deposit_uuid' => $deposit->getDepositUuid(),
         ], UrlGeneratorInterface::ABSOLUTE_URL));
         $response->setStatusCode(Response::HTTP_CREATED);
@@ -250,24 +250,24 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
      *
      * @return Response
      *
-     * @Route("/cont-iri/{journal_uuid}/{deposit_uuid}/state", methods={"GET"}, name="sword_statement", requirements={
-     *      "journal_uuid": ".{36}",
+     * @Route("/cont-iri/{provider_uuid}/{deposit_uuid}/state", methods={"GET"}, name="sword_statement", requirements={
+     *      "provider_uuid": ".{36}",
      *      "deposit_uuid": ".{36}"
      * })
-     * @ParamConverter("journal", options={"mapping": {"journal_uuid"="uuid"}})
+     * @ParamConverter("provider", options={"mapping": {"provider_uuid"="uuid"}})
      * @ParamConverter("deposit", options={"mapping": {"deposit_uuid"="depositUuid"}})
      */
-    public function statementAction(Request $request, Journal $journal, Deposit $deposit) {
-        $accepting = $this->checkAccess($journal->getUuid());
-        $this->logger->notice("{$request->getClientIp()} - statement - {$journal->getUuid()} - {$deposit->getDepositUuid()} - accepting: " . ($accepting ? 'yes' : 'no'));
+    public function statementAction(Request $request, Provider $provider, Deposit $deposit) {
+        $accepting = $this->checkAccess($provider->getUuid());
+        $this->logger->notice("{$request->getClientIp()} - statement - {$provider->getUuid()} - {$deposit->getDepositUuid()} - accepting: " . ($accepting ? 'yes' : 'no'));
         if ( ! $accepting && ! $this->isGranted('ROLE_USER')) {
             throw new BadRequestHttpException('Not authorized to request statements.', null, 400);
         }
-        if ($journal !== $deposit->getJournal()) {
-            throw new BadRequestHttpException('Deposit does not belong to journal.', null, 400);
+        if ($provider !== $deposit->getProvider()) {
+            throw new BadRequestHttpException('Deposit does not belong to provider.', null, 400);
         }
-        $journal->setContacted(new DateTime());
-        $journal->setStatus('healthy');
+        $provider->setContacted(new DateTime());
+        $provider->setStatus('healthy');
         $this->em->flush();
         $response = $this->render('sword/statement.xml.twig', [
             'deposit' => $deposit,
@@ -282,31 +282,31 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
      *
      * @return Response
      *
-     * @Route("/cont-iri/{journal_uuid}/{deposit_uuid}/edit", methods={"PUT"}, name="sword_edit", requirements={
-     *      "journal_uuid": ".{36}",
+     * @Route("/cont-iri/{provider_uuid}/{deposit_uuid}/edit", methods={"PUT"}, name="sword_edit", requirements={
+     *      "provider_uuid": ".{36}",
      *      "deposit_uuid": ".{36}"
      * })
-     * @ParamConverter("journal", options={"mapping": {"journal_uuid"="uuid"}})
+     * @ParamConverter("provider", options={"mapping": {"provider_uuid"="uuid"}})
      * @ParamConverter("deposit", options={"mapping": {"deposit_uuid"="depositUuid"}})
      */
-    public function editAction(Request $request, Journal $journal, Deposit $deposit, DepositBuilder $builder) {
-        $accepting = $this->checkAccess($journal->getUuid());
-        $this->logger->notice("{$request->getClientIp()} - edit deposit - {$journal->getUuid()} - {$deposit->getDepositUuid()} - accepting: " . ($accepting ? 'yes' : 'no'));
+    public function editAction(Request $request, Provider $provider, Deposit $deposit, DepositBuilder $builder) {
+        $accepting = $this->checkAccess($provider->getUuid());
+        $this->logger->notice("{$request->getClientIp()} - edit deposit - {$provider->getUuid()} - {$deposit->getDepositUuid()} - accepting: " . ($accepting ? 'yes' : 'no'));
         if ( ! $accepting) {
             throw new BadRequestHttpException('Not authorized to create deposits.', null, 400);
         }
-        if ($journal !== $deposit->getJournal()) {
-            throw new BadRequestHttpException('Deposit does not belong to journal.', null, 400);
+        if ($provider !== $deposit->getProvider()) {
+            throw new BadRequestHttpException('Deposit does not belong to provider.', null, 400);
         }
         $xml = $this->getXml($request);
-        $newDeposit = $builder->fromXml($journal, $xml);
+        $newDeposit = $builder->fromXml($provider, $xml);
         $newDeposit->setAction('edit');
         $this->em->flush();
 
         // @var Response
-        $response = $this->statementAction($request, $journal, $deposit);
+        $response = $this->statementAction($request, $provider, $deposit);
         $response->headers->set('Location', $this->generateUrl('sword_statement', [
-            'journal_uuid' => $journal->getUuid(),
+            'provider_uuid' => $provider->getUuid(),
             'deposit_uuid' => $deposit->getDepositUuid(),
         ], UrlGeneratorInterface::ABSOLUTE_URL));
         $response->setStatusCode(Response::HTTP_CREATED);

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Command\Processing;
 
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\Entity\Deposit;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,7 +29,7 @@ class AbstractProcessingCmdTest extends ControllerBaseCase {
 
     public function fixtures() : array {
         return [
-            JournalFixtures::class,
+            ProviderFixtures::class,
             DepositFixtures::class,
         ];
     }

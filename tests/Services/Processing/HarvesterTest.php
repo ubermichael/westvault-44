@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Services\Processing;
 
 use App\Entity\Deposit;
-use App\Entity\Journal;
+use App\Entity\Provider;
 use App\Services\Processing\Harvester;
 use Exception;
 use GuzzleHttp\Client;
@@ -183,9 +183,9 @@ class HarvesterTest extends ControllerBaseCase {
         $deposit = new Deposit();
         $deposit->setUrl('http://example.com/path');
         $deposit->setSize(1);
-        $journal = new Journal();
-        $journal->setUuid('abc123');
-        $deposit->setJournal($journal);
+        $provider = new Provider();
+        $provider->setUuid('abc123');
+        $deposit->setProvider($provider);
         $result = $this->harvester->processDeposit($deposit);
         $this->assertSame('', $deposit->getProcessingLog());
         $this->assertTrue($result);
@@ -207,9 +207,9 @@ class HarvesterTest extends ControllerBaseCase {
         $deposit = new Deposit();
         $deposit->setUrl('http://example.com/path');
         $deposit->setSize(1000);
-        $journal = new Journal();
-        $journal->setUuid('abc123');
-        $deposit->setJournal($journal);
+        $provider = new Provider();
+        $provider->setUuid('abc123');
+        $deposit->setProvider($provider);
         $result = $this->harvester->processDeposit($deposit);
         $this->assertStringContainsStringIgnoringCase('Expected file size', $deposit->getProcessingLog());
         $this->assertNull($result);

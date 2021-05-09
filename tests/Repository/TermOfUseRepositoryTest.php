@@ -16,7 +16,7 @@ use App\Repository\TermOfUseRepository;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
 /**
- * Description of JournalRepositoryTest.
+ * Description of ProviderRepositoryTest.
  */
 class TermOfUseRepositoryTest extends ControllerBaseCase {
     /**

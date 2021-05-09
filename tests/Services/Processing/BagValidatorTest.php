@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Services\Processing;
 
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\Services\Processing\BagValidator;
 use App\Utilities\BagReader;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
@@ -28,7 +28,7 @@ class BagValidatorTest extends ControllerBaseCase {
 
     protected function fixtures() : array {
         return [
-            JournalFixtures::class,
+            ProviderFixtures::class,
             DepositFixtures::class,
         ];
     }
@@ -42,7 +42,7 @@ class BagValidatorTest extends ControllerBaseCase {
 
         $bag = $this->createMock(Bag::class);
         $bag->method('validate')->willReturn(true);
-        $bag->method('getBagInfoData')->willReturn($deposit->getJournalVersion());
+        $bag->method('getBagInfoData')->willReturn($deposit->getProviderVersion());
         $reader = $this->createMock(BagReader::class);
         $reader->method('readBag')->willReturn($bag);
         $this->validator->setBagReader($reader);

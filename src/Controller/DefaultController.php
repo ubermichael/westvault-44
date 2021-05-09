@@ -45,12 +45,12 @@ class DefaultController extends AbstractController implements PaginatorAwareInte
             return $this->render('default/index_anon.html.twig');
         }
 
-        $journalRepo = $em->getRepository('App:Journal');
+        $providerRepo = $em->getRepository('App:Provider');
         $depositRepo = $em->getRepository('App:Deposit');
 
         return $this->render('default/index_user.html.twig', [
-            'journals_new' => $journalRepo->findNew(),
-            'journal_summary' => $journalRepo->statusSummary(),
+            'providers_new' => $providerRepo->findNew(),
+            'provider_summary' => $providerRepo->statusSummary(),
             'deposits_new' => $depositRepo->findNew(),
             'states' => $depositRepo->stateSummary(),
         ]);
@@ -86,7 +86,7 @@ class DefaultController extends AbstractController implements PaginatorAwareInte
      *
      * This action lives in the default controller because the
      * deposit controller works with deposits from a single
-     * journal. This search works across all deposits.
+     * provider. This search works across all deposits.
      *
      * @return array
      *

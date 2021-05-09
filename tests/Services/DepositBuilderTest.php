@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Services;
 
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\Entity\Deposit;
 use App\Services\DepositBuilder;
 use App\Utilities\Namespaces;
@@ -32,7 +32,7 @@ class DepositBuilderTest extends ControllerBaseCase {
        xmlns:pkp="http://pkp.sfu.ca/SWORD">
 	<email>user@example.com</email>
 	<title>Intl J Test</title>
-	<pkp:journal_url>http://example.com/ijt</pkp:journal_url>
+	<pkp:provider_url>http://example.com/ijt</pkp:provider_url>
 	<pkp:publisherName>Publisher institution</pkp:publisherName>
 	<pkp:publisherUrl>http://publisher.example.com</pkp:publisherUrl>
 	<pkp:issn>0000-0000</pkp:issn>
@@ -55,7 +55,7 @@ ENDXML;
 
     public function fixtures() : array {
         return [
-            JournalFixtures::class,
+            ProviderFixtures::class,
             DepositFixtures::class,
         ];
     }
@@ -88,7 +88,7 @@ ENDXML;
 
     public function depositData() {
         return [
-            ['2.4.8', 'getJournalVersion'],
+            ['2.4.8', 'getProviderVersion'],
             [['publishingMode' => 'Open'], 'getLicense'],
             ['', 'getFileType'],
             ['00FD6D96-0155-43A4-97F7-2C6EE8EBFF09', 'getDepositUuid'],
@@ -99,7 +99,7 @@ ENDXML;
             ['25B0BD51BB05C145672617FCED484C9E71EC553B', 'getChecksumValue'],
             ['http://example.com//00FD6D96-0155-43A4-97F7-2C6EE8EBFF09', 'getUrl'],
             ['3613', 'getSize'],
-            ['depositedByJournal', 'getState'],
+            ['depositedByProvider', 'getState'],
             [[], 'getErrorLog'],
             [null, 'getPlnState'],
             [null, 'getPackageChecksumType'],
@@ -113,6 +113,6 @@ ENDXML;
     protected function setup() : void {
         parent::setUp();
         $builder = self::$container->get(DepositBuilder::class);
-        $this->deposit = $builder->fromXml($this->getReference('journal.1'), $this->getXml());
+        $this->deposit = $builder->fromXml($this->getReference('provider.1'), $this->getXml());
     }
 }

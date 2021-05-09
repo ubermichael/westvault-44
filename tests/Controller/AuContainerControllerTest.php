@@ -13,7 +13,7 @@ namespace App\Controller;
 use App\DataFixtures\AuContainerFixtures;
 use App\DataFixtures\BlacklistFixtures;
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ class AuContainerControllerTest extends ControllerBaseCase {
         return [
             UserFixtures::class,
             BlacklistFixtures::class,
-            JournalFixtures::class,
+            ProviderFixtures::class,
             DepositFixtures::class,
             AuContainerFixtures::class,
         ];

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Repository;
 
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\Entity\Deposit;
 use App\Repository\DepositRepository;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
@@ -28,7 +28,7 @@ class DepositRepositoryTest extends ControllerBaseCase {
     protected function fixtures() : array {
         return [
             DepositFixtures::class,
-            JournalFixtures::class,
+            ProviderFixtures::class,
         ];
     }
 
@@ -42,23 +42,23 @@ class DepositRepositoryTest extends ControllerBaseCase {
         $this->assertSame(1, count($result->execute()));
     }
 
-    public function testSearchQueryUuidWithJournal() : void {
-        $result = $this->repo->searchQuery('A584', $this->getReference('journal.1'));
+    public function testSearchQueryUuidWithProvider() : void {
+        $result = $this->repo->searchQuery('A584', $this->getReference('provider.1'));
         $this->assertSame(1, count($result->execute()));
     }
 
     public function testSearchQueryUrlWithJorunal() : void {
-        $result = $this->repo->searchQuery('1.zip', $this->getReference('journal.1'));
+        $result = $this->repo->searchQuery('1.zip', $this->getReference('provider.1'));
         $this->assertSame(1, count($result->execute()));
     }
 
-    public function testSearchQueryUuidWithOtherJournal() : void {
-        $result = $this->repo->searchQuery('A584', $this->getReference('journal.2'));
+    public function testSearchQueryUuidWithOtherProvider() : void {
+        $result = $this->repo->searchQuery('A584', $this->getReference('provider.2'));
         $this->assertSame(0, count($result->execute()));
     }
 
     public function testSearchQueryUrlWithOtherJorunal() : void {
-        $result = $this->repo->searchQuery('1.zip', $this->getReference('journal.2'));
+        $result = $this->repo->searchQuery('1.zip', $this->getReference('provider.2'));
         $this->assertSame(0, count($result->execute()));
     }
 

@@ -18,8 +18,8 @@ class CreateDepositTest extends AbstractSwordTestCase {
     xmlns:dcterms="http://purl.org/dc/terms/"
     xmlns:pkp="http://pkp.sfu.ca/SWORD">
     <email>foo@example.com</email>
-    <title>Test Data Journal of Testing</title>
-    <pkp:journal_url>http://tdjt.example.com</pkp:journal_url>
+    <title>Test Data Provider of Testing</title>
+    <pkp:provider_url>http://tdjt.example.com</pkp:provider_url>
     <pkp:publisherName>Publisher of Stuff</pkp:publisherName>
     <pkp:publisherUrl>http://publisher.example.com</pkp:publisherUrl>
     <pkp:issn>1234-1234</pkp:issn>
@@ -55,7 +55,7 @@ ENDXML;
         $this->assertSame('http://localhost/api/sword/2.0/cont-iri/44428B12-CDC4-453E-8157-319004CD8CE6/5F5C84B1-80BF-4071-8D3F-057AA3184FC9/state', $response->headers->get('Location'));
         $this->assertSame($depositCount + 1, count($this->entityManager->getRepository('App:Deposit')->findAll()));
         $xml = $this->getXml($this->client);
-        $this->assertSame('depositedByJournal', $this->getXmlValue($xml, '//atom:category[@label="Processing State"]/@term'));
+        $this->assertSame('depositedByProvider', $this->getXmlValue($xml, '//atom:category[@label="Processing State"]/@term'));
     }
 
     public function testCreateDepositNotWhitelisted() : void {

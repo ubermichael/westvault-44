@@ -12,7 +12,7 @@ namespace App\Tests\Controller\SwordController;
 
 use App\DataFixtures\BlacklistFixtures;
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\DataFixtures\TermOfUseFixtures;
 use App\DataFixtures\WhitelistFixtures;
 use App\Utilities\Namespaces;
@@ -32,7 +32,7 @@ abstract class AbstractSwordTestCase extends ControllerBaseCase {
 
     public function fixtures() : array {
         return [
-            JournalFixtures::class,
+            ProviderFixtures::class,
             DepositFixtures::class,
             TermOfUseFixtures::class,
             WhitelistFixtures::class,

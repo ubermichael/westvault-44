@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Services;
 
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\Services\FilePaths;
 use App\Services\SwordClient;
 use App\Utilities\ServiceDocument;
@@ -118,7 +118,7 @@ ENDXML;
     protected function fixtures() : array {
         return [
             DepositFixtures::class,
-            JournalFixtures::class,
+            ProviderFixtures::class,
         ];
     }
 

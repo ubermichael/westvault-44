@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
@@ -20,56 +20,56 @@ class DepositControllerTest extends ControllerBaseCase {
         return [
             UserFixtures::class,
             DepositFixtures::class,
-            JournalFixtures::class,
+            ProviderFixtures::class,
         ];
     }
 
     public function testAnonIndex() : void {
 
-        $crawler = $this->client->request('GET', '/journal/1/deposit/');
+        $crawler = $this->client->request('GET', '/provider/1/deposit/');
         $this->assertSame(302, $this->client->getResponse()->getStatusCode());
     }
 
     public function testUserIndex() : void {
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/journal/1/deposit/');
+        $crawler = $this->client->request('GET', '/provider/1/deposit/');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testAdminIndex() : void {
         $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/journal/1/deposit/');
+        $crawler = $this->client->request('GET', '/provider/1/deposit/');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testAnonShow() : void {
 
-        $crawler = $this->client->request('GET', '/journal/1/deposit/1');
+        $crawler = $this->client->request('GET', '/provider/1/deposit/1');
         $this->assertSame(302, $this->client->getResponse()->getStatusCode());
     }
 
     public function testUserShow() : void {
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/journal/1/deposit/1');
+        $crawler = $this->client->request('GET', '/provider/1/deposit/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testAdminShow() : void {
         $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/journal/1/deposit/1');
+        $crawler = $this->client->request('GET', '/provider/1/deposit/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testAnonSearch() : void {
 
-        $formCrawler = $this->client->request('GET', '/journal/2/deposit/search');
+        $formCrawler = $this->client->request('GET', '/provider/2/deposit/search');
         $this->assertSame(302, $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isRedirect());
     }
 
     public function testUserSearch() : void {
         $this->login('user.user');
-        $formCrawler = $this->client->request('GET', '/journal/2/deposit/search');
+        $formCrawler = $this->client->request('GET', '/provider/2/deposit/search');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $form = $formCrawler->selectButton('Search')->form([
             'q' => 'A584',
@@ -81,7 +81,7 @@ class DepositControllerTest extends ControllerBaseCase {
 
     public function testAdminSearch() : void {
         $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/journal/2/deposit/search');
+        $formCrawler = $this->client->request('GET', '/provider/2/deposit/search');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $form = $formCrawler->selectButton('Search')->form([
             'q' => 'A584',

@@ -49,7 +49,7 @@ class PingResultTest extends TestCase {
       </term>
     </terms>
   </pluginInfo>
-  <journalInfo>
+  <providerInfo>
     <title>Publication of Soft Cheeses</title>
     <articles count="12">
       <article pubDate="2017-12-26 13:56:20">
@@ -59,7 +59,7 @@ class PingResultTest extends TestCase {
         Coulommiers
       </article>
     </articles>
-  </journalInfo>
+  </providerInfo>
 </plnplugin>
 ENDXML;
     }
@@ -124,8 +124,8 @@ ENDXML;
         $this->assertSame('yes', $this->result->areTermsAccepted());
     }
 
-    public function testJournalTitle() : void {
-        $this->assertSame('Publication of Soft Cheeses', $this->result->getJournalTitle());
+    public function testProviderTitle() : void {
+        $this->assertSame('Publication of Soft Cheeses', $this->result->getProviderTitle());
     }
 
     public function testArticleCount() : void {

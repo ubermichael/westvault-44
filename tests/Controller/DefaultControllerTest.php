@@ -71,11 +71,11 @@ class DefaultControllerTest extends ControllerBaseCase {
         $this->assertSame(1, $this->client->getCrawler()->filter('td:contains("978EA2B4-01DB-4F37-BD74-871DDBE71BF5")')->count());
     }
 
-    public function testFetchActionJournalMismatch() : void {
+    public function testFetchActionProviderMismatch() : void {
 
         $crawler = $this->client->request('GET', '/fetch/44428B12-CDC4-453E-8157-319004CD8CE6/F93A8108-B705-4763-A592-B718B00BD4EA.zip');
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
-        $this->assertStringContainsStringIgnoringCase('Journal ID does not match', $this->client->getResponse()->getContent());
+        $this->assertStringContainsStringIgnoringCase('Provider ID does not match', $this->client->getResponse()->getContent());
     }
 
     public function testFetchActionDeposit404() : void {

@@ -10,25 +10,25 @@ declare(strict_types=1);
 
 namespace App\Tests\Services;
 
-use App\DataFixtures\JournalFixtures;
-use App\Entity\Journal;
-use App\Services\JournalBuilder;
+use App\DataFixtures\ProviderFixtures;
+use App\Entity\Provider;
+use App\Services\ProviderBuilder;
 use App\Utilities\Namespaces;
 use DateTime;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
 /**
- * Description of JournalBuilderTest.
+ * Description of ProviderBuilderTest.
  */
-class JournalBuilderTest extends ControllerBaseCase {
+class ProviderBuilderTest extends ControllerBaseCase {
     /**
-     * @var JournalBuilder
+     * @var ProviderBuilder
      */
     private $builder;
 
     public function fixtures() : array {
         return [
-            JournalFixtures::class,
+            ProviderFixtures::class,
         ];
     }
 
@@ -40,7 +40,7 @@ class JournalBuilderTest extends ControllerBaseCase {
        xmlns:pkp="http://pkp.sfu.ca/SWORD">
 	<email>user@example.com</email>
 	<title>Intl J Test</title>
-	<pkp:journal_url>http://example.com/ijt</pkp:journal_url>
+	<pkp:provider_url>http://example.com/ijt</pkp:provider_url>
 	<pkp:publisherName>Publisher institution</pkp:publisherName>
 	<pkp:publisherUrl>http://publisher.example.com</pkp:publisherUrl>
 	<pkp:issn>0000-0000</pkp:issn>
@@ -67,31 +67,31 @@ ENDXML;
     }
 
     public function testInstance() : void {
-        $this->assertInstanceOf(JournalBuilder::class, self::$container->get(JournalBuilder::class));
+        $this->assertInstanceOf(ProviderBuilder::class, self::$container->get(ProviderBuilder::class));
     }
 
     public function testResultInstance() : void {
-        $this->journal = $this->builder->fromXml($this->getXml(), 'B99FE131-48B5-440A-A552-4F1BF2BFDE82');
-        $this->assertInstanceOf(Journal::class, $this->journal);
+        $this->provider = $this->builder->fromXml($this->getXml(), 'B99FE131-48B5-440A-A552-4F1BF2BFDE82');
+        $this->assertInstanceOf(Provider::class, $this->provider);
     }
 
     public function testGetContacted() : void {
-        $this->journal = $this->builder->fromXml($this->getXml(), 'B99FE131-48B5-440A-A552-4F1BF2BFDE82');
-        $this->assertInstanceOf(DateTime::class, $this->journal->getContacted());
+        $this->provider = $this->builder->fromXml($this->getXml(), 'B99FE131-48B5-440A-A552-4F1BF2BFDE82');
+        $this->assertInstanceOf(DateTime::class, $this->provider->getContacted());
     }
 
     /**
-     * @dataProvider journalXmlData
+     * @dataProvider providerXmlData
      *
      * @param mixed $expected
      * @param mixed $method
      */
     public function testFromXml($expected, $method) : void {
-        $this->journal = $this->builder->fromXml($this->getXml(), 'B99FE131-48B5-440A-A552-4F1BF2BFDE82');
-        $this->assertSame($expected, $this->journal->{$method}());
+        $this->provider = $this->builder->fromXml($this->getXml(), 'B99FE131-48B5-440A-A552-4F1BF2BFDE82');
+        $this->assertSame($expected, $this->provider->{$method}());
     }
 
-    public function journalXmlData() {
+    public function providerXmlData() {
         return [
             ['B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'getUuid'],
             [null, 'getOjsVersion'],
@@ -108,24 +108,24 @@ ENDXML;
     }
 
     /**
-     * @dataProvider journalRequestData
+     * @dataProvider providerRequestData
      *
      * @param mixed $expected
      * @param mixed $method
      */
     public function testFromRequest($expected, $method) : void {
-        $this->journal = $this->builder->fromRequest('B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'http://example.com/journal');
-        $this->assertSame($expected, $this->journal->{$method}());
+        $this->provider = $this->builder->fromRequest('B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'http://example.com/provider');
+        $this->assertSame($expected, $this->provider->{$method}());
     }
 
-    public function journalRequestData() {
+    public function providerRequestData() {
         return [
             ['B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'getUuid'],
             [null, 'getOjsVersion'],
             [null, 'getNotified'],
             [null, 'getTitle'],
             [null, 'getIssn'],
-            ['http://example.com/journal', 'getUrl'],
+            ['http://example.com/provider', 'getUrl'],
             ['new', 'getStatus'],
             [false, 'getTermsAccepted'],
             ['unknown@unknown.com', 'getEmail'],
@@ -135,12 +135,12 @@ ENDXML;
     }
 
     public function testFromRequestExisting() : void {
-        $this->journal = $this->builder->fromRequest(JournalFixtures::UUIDS[1], 'http://example.com/journal/0');
-        $this->assertSame('healthy', $this->journal->getStatus());
+        $this->provider = $this->builder->fromRequest(ProviderFixtures::UUIDS[1], 'http://example.com/provider/0');
+        $this->assertSame('healthy', $this->provider->getStatus());
     }
 
     protected function setup() : void {
         parent::setUp();
-        $this->builder = self::$container->get(JournalBuilder::class);
+        $this->builder = self::$container->get(ProviderBuilder::class);
     }
 }

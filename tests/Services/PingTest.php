@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Services;
 
-use App\DataFixtures\JournalFixtures;
+use App\DataFixtures\ProviderFixtures;
 use App\Entity\Whitelist;
 use App\Services\BlackWhiteList;
 use App\Services\Ping;
@@ -62,7 +62,7 @@ class PingTest extends ControllerBaseCase {
       </term>
     </terms>
   </pluginInfo>
-  <journalInfo>
+  <providerInfo>
     <title>Publication of Soft Cheeses</title>
     <articles count="12">
       <article pubDate="2017-12-26 13:56:20">
@@ -72,14 +72,14 @@ class PingTest extends ControllerBaseCase {
         Coulommiers
       </article>
     </articles>
-  </journalInfo>
+  </providerInfo>
 </plnplugin>
 ENDXML;
     }
 
     protected function fixtures() : array {
         return [
-            JournalFixtures::class,
+            ProviderFixtures::class,
         ];
     }
 
@@ -90,65 +90,65 @@ ENDXML;
     public function testProcessFail() : void {
         $result = $this->createMock(PingResult::class);
         $result->method('getHttpstatus')->willReturn(404);
-        $journal = $this->getReference('journal.1');
-        $this->ping->process($journal, $result);
-        $this->assertSame('ping-error', $journal->getStatus());
+        $provider = $this->getReference('provider.1');
+        $this->ping->process($provider, $result);
+        $this->assertSame('ping-error', $provider->getStatus());
     }
 
     public function testProcessMissingRelease() : void {
         $result = $this->createMock(PingResult::class);
         $result->method('getHttpstatus')->willReturn(200);
         $result->method('getOjsRelease')->willReturn(false);
-        $journal = $this->getReference('journal.1');
-        $this->ping->process($journal, $result);
-        $this->assertSame('ping-error', $journal->getStatus());
+        $provider = $this->getReference('provider.1');
+        $this->ping->process($provider, $result);
+        $this->assertSame('ping-error', $provider->getStatus());
     }
 
     public function testProcessOldVersion() : void {
         $result = $this->createMock(PingResult::class);
         $result->method('getHttpstatus')->willReturn(200);
         $result->method('getOjsRelease')->willReturn('2.4.0');
-        $result->method('getJournalTitle')->willReturn('Yes Minister');
+        $result->method('getProviderTitle')->willReturn('Yes Minister');
         $result->method('areTermsAccepted')->willReturn('Yes');
 
-        $journal = $this->getReference('journal.1');
-        $this->ping->process($journal, $result);
+        $provider = $this->getReference('provider.1');
+        $this->ping->process($provider, $result);
         $this->entityManager->flush();
-        $this->assertSame('healthy', $journal->getStatus());
-        $this->assertFalse($this->list->isListed($journal->getUuid()));
+        $this->assertSame('healthy', $provider->getStatus());
+        $this->assertFalse($this->list->isListed($provider->getUuid()));
     }
 
     public function testProcessListed() : void {
         $result = $this->createMock(PingResult::class);
         $result->method('getHttpstatus')->willReturn(200);
         $result->method('getOjsRelease')->willReturn('2.4.9');
-        $result->method('getJournalTitle')->willReturn('Yes Minister');
+        $result->method('getProviderTitle')->willReturn('Yes Minister');
         $result->method('areTermsAccepted')->willReturn('Yes');
 
-        $journal = $this->getReference('journal.1');
+        $provider = $this->getReference('provider.1');
         $whitelist = new Whitelist();
-        $whitelist->setUuid($journal->getUuid());
+        $whitelist->setUuid($provider->getUuid());
         $whitelist->setComment('testing.');
         $this->entityManager->persist($whitelist);
         $this->entityManager->flush();
 
-        $this->ping->process($journal, $result);
+        $this->ping->process($provider, $result);
         $this->entityManager->flush();
-        $this->assertSame('healthy', $journal->getStatus());
+        $this->assertSame('healthy', $provider->getStatus());
     }
 
     public function testProcessSuccess() : void {
         $result = $this->createMock(PingResult::class);
         $result->method('getHttpstatus')->willReturn(200);
         $result->method('getOjsRelease')->willReturn('2.4.9');
-        $result->method('getJournalTitle')->willReturn('Yes Minister');
+        $result->method('getProviderTitle')->willReturn('Yes Minister');
         $result->method('areTermsAccepted')->willReturn('Yes');
 
-        $journal = $this->getReference('journal.1');
-        $this->ping->process($journal, $result);
+        $provider = $this->getReference('provider.1');
+        $this->ping->process($provider, $result);
         $this->entityManager->clear();
-        $this->assertSame('healthy', $journal->getStatus());
-        $this->assertTrue($this->list->isListed($journal->getUuid()));
+        $this->assertSame('healthy', $provider->getStatus());
+        $this->assertTrue($this->list->isListed($provider->getUuid()));
     }
 
     public function testPingFail() : void {
@@ -159,9 +159,9 @@ ENDXML;
         $client = new Client(['handler' => $handler]);
 
         $this->ping->setClient($client);
-        $journal = $this->getReference('journal.1');
-        $this->ping->ping($journal);
-        $this->assertSame('ping-error', $journal->getStatus());
+        $provider = $this->getReference('provider.1');
+        $this->ping->ping($provider);
+        $this->assertSame('ping-error', $provider->getStatus());
     }
 
     public function testPingSuccess() : void {
@@ -172,11 +172,11 @@ ENDXML;
         $client = new Client(['handler' => $handler]);
 
         $this->ping->setClient($client);
-        $journal = $this->getReference('journal.1');
-        $this->ping->ping($journal);
+        $provider = $this->getReference('provider.1');
+        $this->ping->ping($provider);
         $this->entityManager->flush();
-        $this->assertSame('healthy', $journal->getStatus());
-        $this->assertTrue($this->list->isListed($journal->getUuid()));
+        $this->assertSame('healthy', $provider->getStatus());
+        $this->assertTrue($this->list->isListed($provider->getUuid()));
     }
 
     protected function setup() : void {

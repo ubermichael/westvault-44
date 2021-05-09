@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Tests\Services\Processing;
 
 use App\Entity\Deposit;
-use App\Entity\Journal;
+use App\Entity\Provider;
 use App\Services\FilePaths;
 use App\Services\Processing\PayloadValidator;
 use Exception;
@@ -72,11 +72,11 @@ class PayloadValidatorTest extends ControllerBaseCase {
         $filePaths->method('getHarvestFile')->willReturn($file->url());
         $this->validator->setFilePaths($filePaths);
 
-        $journal = new Journal();
-        $journal->setUuid('abc123');
+        $provider = new Provider();
+        $provider->setUuid('abc123');
 
         $deposit = new Deposit();
-        $deposit->setJournal($journal);
+        $deposit->setProvider($provider);
         $deposit->setChecksumType('sha1');
         $deposit->setChecksumValue(hash('sha1', 'some data.'));
 
@@ -92,11 +92,11 @@ class PayloadValidatorTest extends ControllerBaseCase {
         $filePaths->method('getHarvestFile')->willReturn($file->url());
         $this->validator->setFilePaths($filePaths);
 
-        $journal = new Journal();
-        $journal->setUuid('abc123');
+        $provider = new Provider();
+        $provider->setUuid('abc123');
 
         $deposit = new Deposit();
-        $deposit->setJournal($journal);
+        $deposit->setProvider($provider);
         $deposit->setChecksumType('sha1');
         $deposit->setChecksumValue(hash('sha1', 'some other different data.'));
 
@@ -112,11 +112,11 @@ class PayloadValidatorTest extends ControllerBaseCase {
         $filePaths->method('getHarvestFile')->willReturn($file->url());
         $this->validator->setFilePaths($filePaths);
 
-        $journal = new Journal();
-        $journal->setUuid('abc123');
+        $provider = new Provider();
+        $provider->setUuid('abc123');
 
         $deposit = new Deposit();
-        $deposit->setJournal($journal);
+        $deposit->setProvider($provider);
         $deposit->setChecksumType('cheese');
         $deposit->setChecksumValue(hash('sha1', 'some other different data.'));
 

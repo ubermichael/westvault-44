@@ -10,32 +10,32 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
-use App\Entity\Journal;
+use App\Entity\Provider;
 use DateTime;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
 /**
- * Description of JournalTest.
+ * Description of ProviderTest.
  */
-class JournalTest extends ControllerBaseCase {
-    private $journal;
+class ProviderTest extends ControllerBaseCase {
+    private $provider;
 
     public function testInstance() : void {
-        $this->assertInstanceOf(Journal::class, $this->journal);
+        $this->assertInstanceOf(Provider::class, $this->provider);
     }
 
     public function testSetUuid() : void {
-        $this->journal->setUuid('abc123');
-        $this->assertSame('ABC123', $this->journal->getUuid());
+        $this->provider->setUuid('abc123');
+        $this->assertSame('ABC123', $this->provider->getUuid());
     }
 
     public function testSetNotified() : void {
-        $this->journal->setNotified(new DateTime());
-        $this->assertInstanceOf(DateTime::class, $this->journal->getNotified());
+        $this->provider->setNotified(new DateTime());
+        $this->assertInstanceOf(DateTime::class, $this->provider->getNotified());
     }
 
     protected function setup() : void {
         parent::setUp();
-        $this->journal = new Journal();
+        $this->provider = new Provider();
     }
 }
