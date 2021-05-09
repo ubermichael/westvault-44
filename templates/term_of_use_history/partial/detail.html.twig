@@ -1,0 +1,39 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Term Id</th>
+            <td>
+                {{ term_of_use_history.termId }}
+            </td>
+        </tr>
+        <tr>
+            <th>Action</th>
+            <td>
+                {{ term_of_use_history.action }}
+            </td>
+        </tr>
+        <tr>
+            <th>User</th>
+            <td>
+                {{ term_of_use_history.user }}
+            </td>
+        </tr>
+        <tr>
+            <th>Change Set</th>
+            <td>
+                {% if term_of_use_history.changeSet %}{{ term_of_use_history.changeSet|join(', ') }}{% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Created</th>
+            <td>{{ term_of_use_history.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ term_of_use_history.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

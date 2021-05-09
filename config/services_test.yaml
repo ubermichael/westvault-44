@@ -1,0 +1,15 @@
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true
+
+    test.App\Repository\BlacklistRepository: '@App\Repository\BlacklistRepository'
+    test.App\Repository\DepositRepository: '@App\Repository\DepositRepository'
+    test.App\Repository\DocumentRepository: '@App\Repository\DocumentRepository'
+    test.App\Repository\ProviderRepository: '@App\Repository\ProviderRepository'
+    test.App\Repository\TermOfUseRepository: '@App\Repository\TermOfUseRepository'
+    test.App\Repository\TermOfUseHistoryRepository: '@App\Repository\TermOfUseHistoryRepository'
+    test.App\Repository\WhitelistRepository: '@App\Repository\WhitelistRepository'

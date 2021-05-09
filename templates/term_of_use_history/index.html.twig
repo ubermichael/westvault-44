@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Term Of Use History List{% endblock %}
+
+{% block pageheader %}
+    <h1>Term Of Use History List</h1>
+    <p class="count">
+        Displaying {{ term_of_use_histories|length }} term_of_use_histories
+        of {{ term_of_use_histories.getTotalItemCount }} total.
+    </p>
+{% endblock %}
+
+{% block body %}
+
+    {% embed 'term_of_use_history/partial/table.html.twig' %}
+    {% endembed %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(term_of_use_histories) }}
+    </div>
+
+{% endblock %}

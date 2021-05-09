@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Edit Term Of Use {% endblock %}
+
+    {% block body %}
+        <h1>Edit Term Of Use</h1>
+
+        {% embed 'term_of_use/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

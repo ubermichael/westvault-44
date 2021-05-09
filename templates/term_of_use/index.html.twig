@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Term Of Use List{% endblock %}
+
+{% block pageheader %}
+    <h1>Term Of Use List</h1>
+    <p class="count">
+        Displaying {{ term_of_uses|length }} term_of_uses of {{ term_of_uses.getTotalItemCount }} total.
+    </p>
+{% endblock %}
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                <a href="{{ path('term_of_use_new') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> New </a>
+            {% endif %}
+
+            <a href="{{ path('term_of_use_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search </a>
+        </div>
+    </div>
+
+    {% embed 'term_of_use/partial/table.html.twig' %}
+    {% endembed %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(term_of_uses) }}
+    </div>
+
+{% endblock %}

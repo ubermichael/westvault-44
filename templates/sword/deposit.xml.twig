@@ -2,30 +2,32 @@
         xmlns:dcterms="http://purl.org/dc/terms/"
         xmlns:lom="http://lockssomatic.info/SWORD2"
         xmlns:pkp="http://pkp.sfu.ca/SWORD">
-    <title>Deposit from OJS part {{  deposit.auContainer.id }}</title>
+    <title>Deposit from OJS part {{ deposit.auContainer.id }}</title>
     <id>urn:uuid:{{ deposit.depositUuid }}</id>
     <updated>{{ deposit.received|date('Y-m-d') }}</updated>
-    <author><name>{{ deposit.provider.title }}</name></author>
+    <author>
+        <name>{{ deposit.provider.title }}</name>
+    </author>
     <summary type="text">
         Content deposited to LOCKSS-O-Matic via the PKP PLN Staging Server.
     </summary>
     <!-- @size is the file size in kB (1,000 bytes) -->
     <lom:content
-        size="{{ deposit.packageSize }}"
-        checksumType="{{ deposit.packageChecksumType }}"
-        checksumValue="{{ deposit.packageChecksumValue }}"
-        pkp:volume="{{deposit.volume}}"
-        pkp:issue="{{deposit.issue}}"
-        pkp:pubDate="{{deposit.pubDate|date}}"
-        pkp:providerTitle="PKP PLN Preservation"
-        pkp:providerUrl="{{deposit.provider.url}}"
-        pkp:issn="{{deposit.provider.issn}}"
-        pkp:publisher="Public Knowledge Project Staging Server"
-        pkp:publisherName="{{deposit.provider.publisherName}}"
-        pkp:publisherUrl="{{deposit.provider.publisherUrl}}">
+            size="{{ deposit.packageSize }}"
+            checksumType="{{ deposit.packageChecksumType }}"
+            checksumValue="{{ deposit.packageChecksumValue }}"
+            pkp:volume="{{ deposit.volume }}"
+            pkp:issue="{{ deposit.issue }}"
+            pkp:pubDate="{{ deposit.pubDate|date }}"
+            pkp:providerTitle="PKP PLN Preservation"
+            pkp:providerUrl="{{ deposit.provider.url }}"
+            pkp:issn="{{ deposit.provider.issn }}"
+            pkp:publisher="Public Knowledge Project Staging Server"
+            pkp:publisherName="{{ deposit.provider.publisherName }}"
+            pkp:publisherUrl="{{ deposit.provider.publisherUrl }}">
         {{ url('fetch', { 'providerUuid': deposit.provider.uuid, 'depositUuid': deposit.depositUuid }) }}
         <lom:property name="base_url" value="{{ url('homepage') }}" />
         <lom:property name="permission_url" value="{{ url('lockss_permission') }}" />
-        <lom:property name="container_number" value="{{ deposit.aucontainer.id }}"/>
+        <lom:property name="container_number" value="{{ deposit.aucontainer.id }}" />
     </lom:content>
 </entry>

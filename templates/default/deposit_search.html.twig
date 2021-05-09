@@ -5,9 +5,10 @@
 {% block pageheader %}
     <h1>Deposit Search</h1>
     {% if q %}
-    <p class="count">
-        Displaying {{ deposits|length }} search results for <i>{{ q }}</i> of {{ deposits.getTotalItemCount }} total.
-    </p>
+        <p class="count">
+            Displaying {{ deposits|length }} search results for <i>{{ q }}</i> of {{ deposits.getTotalItemCount }}
+            total.
+        </p>
     {% endif %}
 {% endblock %}
 

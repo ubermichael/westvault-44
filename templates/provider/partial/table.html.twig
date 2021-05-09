@@ -1,0 +1,34 @@
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Uuid</th>
+            <th>Name</th>
+            <th>Email</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for provider in providers %}
+            <tr>
+                <td>
+                    <a href="{{ path('provider_show', { 'id': provider.id }) }}">
+                        {{ provider.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ provider.uuid }}
+                </td>
+
+                <td>
+                    {{ provider.name }}
+                </td>
+
+                <td>
+                    {{ provider.email }}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,39 @@
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Weight</th>
+            <th>Key Code</th>
+            <th>Lang Code</th>
+            <th>Content</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for term_of_use in term_of_uses %}
+            <tr>
+                <td>
+                    <a href="{{ path('term_of_use_show', { 'id': term_of_use.id }) }}">
+                        {{ term_of_use.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ term_of_use.weight }}
+                </td>
+
+                <td>
+                    {{ term_of_use.keyCode }}
+                </td>
+
+                <td>
+                    {{ term_of_use.langCode }}
+                </td>
+
+                <td>
+                    {{ term_of_use.content|raw }}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

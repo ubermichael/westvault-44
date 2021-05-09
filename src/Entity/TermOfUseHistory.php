@@ -66,4 +66,44 @@ class TermOfUseHistory extends AbstractEntity {
     public function __toString() : string {
         return 'Term ' . $this->termId;
     }
+
+    public function getTermId() : ?int {
+        return $this->termId;
+    }
+
+    public function setTermId(int $termId) : self {
+        $this->termId = $termId;
+
+        return $this;
+    }
+
+    public function getAction() : ?string {
+        return $this->action;
+    }
+
+    public function setAction(string $action) : self {
+        $this->action = $action;
+
+        return $this;
+    }
+
+    public function getUser() : ?string {
+        return $this->user;
+    }
+
+    public function setUser(string $user) : self {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getChangeSet() : ?array {
+        return $this->changeSet;
+    }
+
+    public function setChangeSet(array $changeSet) : self {
+        $this->changeSet = $changeSet;
+
+        return $this;
+    }
 }

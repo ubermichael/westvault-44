@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Term Of Use History Details {% endblock %}
+
+ {% block pageheader %}
+     <h1>Term Of Use History Details</h1>
+ {% endblock %}
+
+{% block body %}
+
+    {% embed 'term_of_use_history/partial/detail.html.twig' %}
+    {% endembed %}
+
+{% endblock %}

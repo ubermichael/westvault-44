@@ -13,7 +13,6 @@ twig:
         format: Y-m-d g:i:s A
         interval_format: '%%d days'
     globals:
-        blackwhitelist: "@blackwhitelist"
         pln_accepting: "%pln.accepting%"
         pln_maxUploadSize: "%pln.max_upload%"
         pln_maxAuSize: "%pln.max_au%"

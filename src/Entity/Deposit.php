@@ -12,6 +12,7 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +20,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * A single Deposit from a provider.
  *
- * @ORM\Entity(repositoryClass="DepositRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DepositRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"deposit_uuid", "url"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"deposit_uuid"})
+ * })
  */
 class Deposit extends AbstractEntity {
     /**
@@ -106,7 +111,7 @@ class Deposit extends AbstractEntity {
     /**
      * Size of the deposit, in bytes.
      *
-     * @var int
+     * @var string
      *
      * @ORM\Column(type="bigint")
      */
@@ -193,5 +198,185 @@ class Deposit extends AbstractEntity {
 
     public function __toString() : string {
         return $this->depositUuid;
+    }
+
+    public function getInstitution() : ?string {
+        return $this->institution;
+    }
+
+    public function setInstitution(string $institution) : self {
+        $this->institution = $institution;
+
+        return $this;
+    }
+
+    public function getFileType() : ?string {
+        return $this->fileType;
+    }
+
+    public function setFileType(string $fileType) : self {
+        $this->fileType = $fileType;
+
+        return $this;
+    }
+
+    public function getDepositUuid() : ?string {
+        return $this->depositUuid;
+    }
+
+    public function setDepositUuid(string $depositUuid) : self {
+        $this->depositUuid = $depositUuid;
+
+        return $this;
+    }
+
+    public function getReceived() : ?DateTimeInterface {
+        return $this->received;
+    }
+
+    public function setReceived(DateTimeInterface $received) : self {
+        $this->received = $received;
+
+        return $this;
+    }
+
+    public function getAction() : ?string {
+        return $this->action;
+    }
+
+    public function setAction(string $action) : self {
+        $this->action = $action;
+
+        return $this;
+    }
+
+    public function getChecksumType() : ?string {
+        return $this->checksumType;
+    }
+
+    public function setChecksumType(string $checksumType) : self {
+        $this->checksumType = $checksumType;
+
+        return $this;
+    }
+
+    public function getChecksumValue() : ?string {
+        return $this->checksumValue;
+    }
+
+    public function setChecksumValue(string $checksumValue) : self {
+        $this->checksumValue = $checksumValue;
+
+        return $this;
+    }
+
+    public function getUrl() : ?string {
+        return $this->url;
+    }
+
+    public function setUrl(string $url) : self {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getSize() : ?string {
+        return $this->size;
+    }
+
+    public function setSize(string $size) : self {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getState() : ?string {
+        return $this->state;
+    }
+
+    public function setState(string $state) : self {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getErrorLog() : ?array {
+        return $this->errorLog;
+    }
+
+    public function setErrorLog(array $errorLog) : self {
+        $this->errorLog = $errorLog;
+
+        return $this;
+    }
+
+    public function getErrorCount() : ?int {
+        return $this->errorCount;
+    }
+
+    public function setErrorCount(int $errorCount) : self {
+        $this->errorCount = $errorCount;
+
+        return $this;
+    }
+
+    public function getPlnState() : ?string {
+        return $this->plnState;
+    }
+
+    public function setPlnState(?string $plnState) : self {
+        $this->plnState = $plnState;
+
+        return $this;
+    }
+
+    public function getDepositDate() : ?DateTimeInterface {
+        return $this->depositDate;
+    }
+
+    public function setDepositDate(?DateTimeInterface $depositDate) : self {
+        $this->depositDate = $depositDate;
+
+        return $this;
+    }
+
+    public function getDepositReceipt() : ?string {
+        return $this->depositReceipt;
+    }
+
+    public function setDepositReceipt(string $depositReceipt) : self {
+        $this->depositReceipt = $depositReceipt;
+
+        return $this;
+    }
+
+    public function getProcessingLog() : ?string {
+        return $this->processingLog;
+    }
+
+    public function setProcessingLog(string $processingLog) : self {
+        $this->processingLog = $processingLog;
+
+        return $this;
+    }
+
+    public function getHarvestAttempts() : ?int {
+        return $this->harvestAttempts;
+    }
+
+    public function setHarvestAttempts(int $harvestAttempts) : self {
+        $this->harvestAttempts = $harvestAttempts;
+
+        return $this;
+    }
+
+    public function getProvider() : ?Provider {
+        return $this->provider;
+    }
+
+    public function setProvider(?Provider $provider) : self {
+        $this->provider = $provider;
+
+        return $this;
     }
 }

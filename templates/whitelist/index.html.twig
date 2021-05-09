@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Whitelist List{% endblock %}
+
+{% block pageheader %}
+    <h1>Whitelist List</h1>
+    <p class="count">
+        Displaying {{ whitelists|length }} whitelists of {{ whitelists.getTotalItemCount }} total.
+    </p>
+{% endblock %}
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                <a href="{{ path('whitelist_new') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> New </a>
+            {% endif %}
+
+            <a href="{{ path('whitelist_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search </a>
+        </div>
+    </div>
+
+    {% embed 'whitelist/partial/table.html.twig' %}
+    {% endembed %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(whitelists) }}
+    </div>
+
+{% endblock %}

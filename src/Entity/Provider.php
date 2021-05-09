@@ -20,7 +20,11 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  *
  * Any OJS provider may make deposits to the PLN.
  *
- * @ORM\Entity(repositoryClass="ProviderRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProviderRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"uuid", "name", "email"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"uuid"})
+ * })
  */
 class Provider extends AbstractEntity {
     /**
@@ -78,5 +82,62 @@ class Provider extends AbstractEntity {
 
     public function __toString() : string {
         return $this->name;
+    }
+
+    public function getUuid() : ?string {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid) : self {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    public function getName() : ?string {
+        return $this->name;
+    }
+
+    public function setName(string $name) : self {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getEmail() : ?string {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email) : self {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Deposit[]
+     */
+    public function getDeposits() : Collection {
+        return $this->deposits;
+    }
+
+    public function addDeposit(Deposit $deposit) : self {
+        if ( ! $this->deposits->contains($deposit)) {
+            $this->deposits[] = $deposit;
+            $deposit->setProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeposit(Deposit $deposit) : self {
+        if ($this->deposits->removeElement($deposit)) {
+            // set the owning side to null (unless already changed)
+            if ($deposit->getProvider() === $this) {
+                $deposit->setProvider(null);
+            }
+        }
+
+        return $this;
     }
 }

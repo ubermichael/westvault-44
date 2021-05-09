@@ -1,0 +1,39 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Weight</th>
+            <td>
+                {{ term_of_use.weight }}
+            </td>
+        </tr>
+        <tr>
+            <th>Key Code</th>
+            <td>
+                {{ term_of_use.keyCode }}
+            </td>
+        </tr>
+        <tr>
+            <th>Lang Code</th>
+            <td>
+                {{ term_of_use.langCode }}
+            </td>
+        </tr>
+        <tr>
+            <th>Content</th>
+            <td>
+                {{ term_of_use.content|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Created</th>
+            <td>{{ term_of_use.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ term_of_use.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

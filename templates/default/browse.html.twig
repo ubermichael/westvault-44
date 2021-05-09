@@ -21,7 +21,8 @@
                     <ul class='list-group'>
                         {% for status in states %}
                             <li class='list-group-item'>
-                                <a href="{{ path('deposit_browse', {'state': status.state}) }}">{{ status.state }}</a> <span class='badge'>{{status.ct}}</span>
+                                <a href="{{ path('deposit_browse', {'state': status.state}) }}">{{ status.state }}</a>
+                                <span class='badge'>{{ status.ct }}</span>
                             </li>
                         {% endfor %}
                     </ul>

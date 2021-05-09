@@ -18,6 +18,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Misbehaving providers may be Blacklisted until they correct what ails them.
  *
  * @ORM\Entity(repositoryClass="App\Repository\BlacklistRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"uuid", "comment"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"uuid"})
+ * })
  */
 class Blacklist extends AbstractEntity {
     /**
@@ -48,5 +52,25 @@ class Blacklist extends AbstractEntity {
      */
     public function __toString() : string {
         return $this->uuid;
+    }
+
+    public function getUuid() : ?string {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid) : self {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    public function getComment() : ?string {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment) : self {
+        $this->comment = $comment;
+
+        return $this;
     }
 }

@@ -1,0 +1,125 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Institution</th>
+            <td>
+                {{ deposit.institution }}
+            </td>
+        </tr>
+        <tr>
+            <th>File Type</th>
+            <td>
+                {{ deposit.fileType }}
+            </td>
+        </tr>
+        <tr>
+            <th>Deposit Uuid</th>
+            <td>
+                {{ deposit.depositUuid }}
+            </td>
+        </tr>
+        <tr>
+            <th>Received</th>
+            <td>
+                {% if deposit.received %}{{ deposit.received|date }}{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Action</th>
+            <td>
+                {{ deposit.action }}
+            </td>
+        </tr>
+        <tr>
+            <th>Checksum Type</th>
+            <td>
+                {{ deposit.checksumType }}
+            </td>
+        </tr>
+        <tr>
+            <th>Checksum Value</th>
+            <td>
+                {{ deposit.checksumValue }}
+            </td>
+        </tr>
+        <tr>
+            <th>Url</th>
+            <td>
+                {{ deposit.url }}
+            </td>
+        </tr>
+        <tr>
+            <th>Size</th>
+            <td>
+                {{ deposit.size }}
+            </td>
+        </tr>
+        <tr>
+            <th>State</th>
+            <td>
+                {{ deposit.state }}
+            </td>
+        </tr>
+        <tr>
+            <th>Error Log</th>
+            <td>
+                {% if deposit.errorLog %}{{ deposit.errorLog|join(', ') }}{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Error Count</th>
+            <td>
+                {{ deposit.errorCount }}
+            </td>
+        </tr>
+        <tr>
+            <th>Pln State</th>
+            <td>
+                {{ deposit.plnState }}
+            </td>
+        </tr>
+        <tr>
+            <th>Deposit Date</th>
+            <td>
+                {% if deposit.depositDate %}{{ deposit.depositDate|date('Y-m-d') }}{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Deposit Receipt</th>
+            <td>
+                {{ deposit.depositReceipt }}
+            </td>
+        </tr>
+        <tr>
+            <th>Processing Log</th>
+            <td>
+                {{ deposit.processingLog|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Harvest Attempts</th>
+            <td>
+                {{ deposit.harvestAttempts }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Provider</th>
+            <td>
+                {% if deposit.provider %}
+                    <a href='{{ path("provider_show", {"id": deposit.provider.id}) }}'>{{ deposit.provider }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ deposit.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ deposit.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

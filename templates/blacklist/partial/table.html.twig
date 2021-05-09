@@ -1,0 +1,29 @@
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Uuid</th>
+            <th>Comment</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for blacklist in blacklists %}
+            <tr>
+                <td>
+                    <a href="{{ path('blacklist_show', { 'id': blacklist.id }) }}">
+                        {{ blacklist.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ blacklist.uuid }}
+                </td>
+
+                <td>
+                    {{ blacklist.comment|raw }}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

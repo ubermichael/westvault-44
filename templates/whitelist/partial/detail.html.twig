@@ -1,0 +1,27 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Uuid</th>
+            <td>
+                {{ whitelist.uuid }}
+            </td>
+        </tr>
+        <tr>
+            <th>Comment</th>
+            <td>
+                {{ whitelist.comment|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Created</th>
+            <td>{{ whitelist.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ whitelist.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

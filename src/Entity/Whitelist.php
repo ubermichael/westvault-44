@@ -18,6 +18,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Providers which meet the minimum requirements are whitelisted.
  *
  * @ORM\Entity(repositoryClass="App\Repository\WhitelistRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"uuid", "comment"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"uuid"})
+ * })
  */
 class Whitelist extends AbstractEntity {
     /**
@@ -51,5 +55,25 @@ class Whitelist extends AbstractEntity {
      */
     public function __toString() : string {
         return $this->uuid;
+    }
+
+    public function getUuid() : ?string {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid) : self {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    public function getComment() : ?string {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment) : self {
+        $this->comment = $comment;
+
+        return $this;
     }
 }

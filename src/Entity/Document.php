@@ -17,6 +17,10 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * Help Document.
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"title", "summary", "content"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"path"})
+ * })
  */
 class Document extends AbstractEntity {
     /**
@@ -57,5 +61,45 @@ class Document extends AbstractEntity {
 
     public function __toString() : string {
         return $this->title;
+    }
+
+    public function getTitle() : ?string {
+        return $this->title;
+    }
+
+    public function setTitle(string $title) : self {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getPath() : ?string {
+        return $this->path;
+    }
+
+    public function setPath(string $path) : self {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    public function getSummary() : ?string {
+        return $this->summary;
+    }
+
+    public function setSummary(string $summary) : self {
+        $this->summary = $summary;
+
+        return $this;
+    }
+
+    public function getContent() : ?string {
+        return $this->content;
+    }
+
+    public function setContent(string $content) : self {
+        $this->content = $content;
+
+        return $this;
     }
 }

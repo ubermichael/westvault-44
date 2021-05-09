@@ -1,0 +1,49 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Uuid</th>
+            <td>
+                {{ provider.uuid }}
+            </td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>
+                {{ provider.name }}
+            </td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>
+                {{ provider.email }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Deposit</th>
+            <td>
+                {% if provider.deposits|length > 0 %}
+                    <ul>
+                        {% for deposit in provider.deposits %}
+                            <li>
+                                <a href='{{ path("deposit_show", {"id":deposit.id }) }}'>
+                                    {{ deposit }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ provider.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ provider.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

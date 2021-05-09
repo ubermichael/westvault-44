@@ -18,8 +18,10 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  *
  * A single term of use that the provider managers must agree to.
  *
- * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\TermOfUseRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"content"}, flags={"fulltext"})
+ * })
  */
 class TermOfUse extends AbstractEntity {
     /**

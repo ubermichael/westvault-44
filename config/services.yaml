@@ -30,6 +30,8 @@ parameters:
     pln.max_upload: 1000000
     pln.checksum_type: SHA-1
 
+    page_size: 24
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -48,71 +50,6 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments', 'knp_paginator.injectable']
 
-    App\Controller\LockssController:
-        calls:
-            - [ setLogger, ['@monolog.logger.lockss'] ]
-
-    App\Controller\SwordController:
-        calls:
-            - [ setLogger, ['@monolog.logger.sword'] ]
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-
-    App\EventListener\SwordExceptionListener:
-        arguments: ["%kernel.environment%"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-            - { name: kernel.event_listener, event: kernel.controller }
-
-    App\EventListener\TermsOfUseListener:
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: postUpdate }
-            - { name: doctrine.event_listener, event: preRemove }
-
     App\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
-
-    blackwhitelist:
-        class: App\Services\BlackWhiteList
-
-    App\Services\FilePaths:
-        arguments:
-            $root: '%pln.data_dir%'
-            $projectDir: '%kernel.project_dir%'
-
-    App\Services\Ping:
-        arguments:
-            $minOjsVersion: '%pln.min_ojs_version%'
-
-    App\Services\Processing\Depositor:
-        arguments:
-            $heldVersions: '%pln.held_versions%'
-
-    App\Services\Processing\Harvester:
-        arguments:
-            $maxHarvestAttempts: '%pln.max_harvest_attempts%'
-
-    App\Services\Processing\VirusScanner:
-        arguments:
-            $socketPath: '%pln.clamd_socket%'
-
-    App\Services\Processing\StatusChecker:
-        arguments:
-            $cleanup: '%pln.remove_completed_deposits%'
-
-    App\Services\Processing\BagReserializer:
-        arguments:
-            $maxAuSize: '%pln.max_au%'
-
-    App\Services\SwordClient:
-        arguments:
-            $serviceUri: '%pln.service_uri%'
-            $uuid: '%pln.uuid%'
-            $saveXml: '%pln.save_deposit_xml%'
-
-    App\Command\UpgradeCommand:
-        arguments:
-            $oldEm: '@doctrine.dbal.oldversion_connection'

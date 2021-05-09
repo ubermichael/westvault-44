@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Edit Provider {% endblock %}
+
+    {% block body %}
+        <h1>Edit Provider</h1>
+
+        {% embed 'provider/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

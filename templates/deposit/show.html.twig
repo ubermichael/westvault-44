@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deposit Details {% endblock %}
+
+ {% block pageheader %}
+     <h1>Deposit Details</h1>
+ {% endblock %}
+
+{% block body %}
+
+    {% embed 'deposit/partial/detail.html.twig' %}
+    {% endembed %}
+
+{% endblock %}

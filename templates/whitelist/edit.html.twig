@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Edit Whitelist {% endblock %}
+
+    {% block body %}
+        <h1>Edit Whitelist</h1>
+
+        {% embed 'whitelist/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}
