@@ -4,7 +4,7 @@
     "description": "Public Knowledge Project Preservation Network Staging Server",
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
@@ -12,7 +12,7 @@
         "ext-simplexml": "*",
         "ext-xmlwriter": "*",
         "doctrine/common": "^2.13",
-        "guzzlehttp/guzzle": "^6.5",
+        "guzzlehttp/guzzle": "^7.0",
         "ninsuo/symfony-collection": "^2.1",
         "ramsey/uuid": "^4.0",
         "sensio/framework-extra-bundle": "^5.1",
