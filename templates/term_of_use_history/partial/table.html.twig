@@ -29,7 +29,10 @@
                     {{ term_of_use_history.user }}
                 </td>
 
-                <td>{% if term_of_use_history.changeSet %}{{ term_of_use_history.changeSet|join(', ') }}{% endif %}</td>
+                <td>{% if term_of_use_history.changeSet %}
+                        {{ dump(term_of_use_history.changeSet) }}
+                    {% endif %}
+                </td>
 
             </tr>
         {% endfor %}

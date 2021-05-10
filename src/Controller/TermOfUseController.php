@@ -12,6 +12,7 @@ namespace App\Controller;
 
 use App\Entity\TermOfUse;
 use App\Form\TermOfUseType;
+use App\Repository\TermOfUseHistoryRepository;
 use App\Repository\TermOfUseRepository;
 
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -99,9 +100,12 @@ class TermOfUseController extends AbstractController implements PaginatorAwareIn
      *
      * @return array
      */
-    public function show(TermOfUse $termOfUse) {
+    public function show(TermOfUse $termOfUse, TermOfUseHistoryRepository $repo) {
+        $history = $repo->findBy(['termId' => $termOfUse->getId()], ['id' => 'ASC']);
+
         return [
             'term_of_use' => $termOfUse,
+            'history' => $history,
         ];
     }
 
