@@ -188,9 +188,9 @@ class TermOfUseTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect('/term_of_use/1'));
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated KeyCode")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated LangCode")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Content")')->count());
+        $this->assertSame(2, $responseCrawler->filter('td:contains("Updated KeyCode")')->count());
+        $this->assertSame(2, $responseCrawler->filter('td:contains("Updated LangCode")')->count());
+        $this->assertSame(2, $responseCrawler->filter('td:contains("Updated Content")')->count());
     }
 
     /**
@@ -233,9 +233,9 @@ class TermOfUseTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New KeyCode")')->count());
+        $this->assertSame(2, $responseCrawler->filter('td:contains("New KeyCode")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New LangCode")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Content")')->count());
+        $this->assertSame(2, $responseCrawler->filter('td:contains("New Content")')->count());
     }
 
     /**
