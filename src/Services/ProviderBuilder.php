@@ -51,15 +51,8 @@ class ProviderBuilder {
             $provider = new Provider();
         }
         $provider->setUuid($uuid);
-        $provider->setTitle(Xpath::getXmlValue($xml, '//atom:title'));
-        // &amp; -> &.
-        $provider->setUrl(html_entity_decode(Xpath::getXmlValue($xml, '//pkp:provider_url')));
+        $provider->setName(Xpath::getXmlValue($xml, '//atom:title'));
         $provider->setEmail(Xpath::getXmlValue($xml, '//atom:email'));
-        $provider->setIssn(Xpath::getXmlValue($xml, '//pkp:issn'));
-        $provider->setPublisherName(Xpath::getXmlValue($xml, '//pkp:publisherName'));
-        // &amp; -> &.
-        $provider->setPublisherUrl(html_entity_decode(Xpath::getXmlValue($xml, '//pkp:publisherUrl')));
-        $provider->setContacted(new DateTimeImmutable());
         $this->em->persist($provider);
 
         return $provider;
@@ -82,11 +75,6 @@ class ProviderBuilder {
             $provider->setUuid($uuid);
             $provider->setEmail('unknown@unknown.com');
             $this->em->persist($provider);
-        }
-        $provider->setUrl($url);
-        $provider->setContacted(new DateTimeImmutable());
-        if ('new' !== $provider->getStatus()) {
-            $provider->setStatus('healthy');
         }
 
         return $provider;

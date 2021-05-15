@@ -43,6 +43,25 @@ class XmlParserTest extends TestCase {
     }
 
     /**
+     * @see https://stackoverflow.com/a/3886015/9316
+     */
+    public function badUtf8Data() {
+        return [
+            [0, 'A: Valid ASCII a'],
+            [0, "B: Valid 2 Octet Sequence \xc3\xb1"],
+            [1, "C: Invalid 2 Octet Sequence \xc3\x28"],
+            [2, "D: Invalid Sequence Identifier \xa0\xa1"],
+            [0, "E: Valid 3 Octet Sequence \xe2\x82\xa1"],
+            [2, "F: Invalid 3 Octet Sequence (in 2nd Octet) \xe2\x28\xa1"],
+            [2, "G: Invalid 3 Octet Sequence (in 3rd Octet) \xe2\x82\x28"],
+            [0, "H: Valid 4 Octet Sequence \xf0\x90\x8c\xbc"],
+            [3, "I: Invalid 4 Octet Sequence (in 2nd Octet) \xf0\x28\x8c\xbc"],
+            [3, "J: Invalid 4 Octet Sequence (in 3rd Octet) \xf0\x90\x28\xbc"],
+            [2, "K: Invalid 4 Octet Sequence (in 4th Octet) \xf0\x28\x8c\x28"],
+        ];
+    }
+
+    /**
      * @dataProvider badUtf8Data
      *
      * @param mixed $removed
@@ -94,25 +113,6 @@ class XmlParserTest extends TestCase {
         ;
         $dom = $this->parser->fromFile($sourceFile->url());
         $this->fail();
-    }
-
-    /**
-     * @see https://stackoverflow.com/a/3886015/9316
-     */
-    public function badUtf8Data() {
-        return [
-            [0, 'Valid ASCII a'],
-            [0, "Valid 2 Octet Sequence \xc3\xb1"],
-            [1, "Invalid 2 Octet Sequence \xc3\x28"],
-            [2, "Invalid Sequence Identifier \xa0\xa1"],
-            [0, "Valid 3 Octet Sequence \xe2\x82\xa1"],
-            [2, "Invalid 3 Octet Sequence (in 2nd Octet) \xe2\x28\xa1"],
-            [2, "Invalid 3 Octet Sequence (in 3rd Octet) \xe2\x82\x28"],
-            [0, "Valid 4 Octet Sequence \xf0\x90\x8c\xbc"],
-            [3, "Invalid 4 Octet Sequence (in 2nd Octet) \xf0\x28\x8c\xbc"],
-            [3, "Invalid 4 Octet Sequence (in 3rd Octet) \xf0\x90\x28\xbc"],
-            [2, "Invalid 4 Octet Sequence (in 4th Octet) \xf0\x28\x8c\x28"],
-        ];
     }
 
     protected function setup() : void {

@@ -13,6 +13,7 @@ namespace App\Form;
 use App\Entity\Provider;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,7 +40,7 @@ class ProviderType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
-        $builder->add('email', TextType::class, [
+        $builder->add('email', EmailType::class, [
             'label' => 'Email',
             'required' => false,
             'attr' => [

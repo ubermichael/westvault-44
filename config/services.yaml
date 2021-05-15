@@ -30,6 +30,8 @@ parameters:
     pln.max_upload: 1000000
     pln.checksum_type: SHA-1
 
+    pln.institution_name: WestVault Preserved Content
+
     page_size: 24
 
 services:
@@ -57,6 +59,12 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments', 'knp_paginator.injectable']
+
+    App\EventListener\SwordExceptionListener:
+        arguments: ["%kernel.environment%"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+            - { name: kernel.event_listener, event: kernel.controller }
 
     App\EventListener\TermsOfUseListener:
         tags:
@@ -90,3 +98,5 @@ services:
             $serviceUri: '%pln.service_uri%'
             $uuid: '%pln.uuid%'
             $saveXml: '%pln.save_deposit_xml%'
+        calls:
+            - [ setPlnProviderTitle, ["%pln.institution_name%"] ]

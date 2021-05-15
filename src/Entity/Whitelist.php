@@ -62,7 +62,7 @@ class Whitelist extends AbstractEntity {
     }
 
     public function setUuid(string $uuid) : self {
-        $this->uuid = $uuid;
+        $this->uuid = mb_strtoupper($uuid);
 
         return $this;
     }

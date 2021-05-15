@@ -44,7 +44,7 @@ class DepositFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setErrorCount($i);
             $fixture->setPlnState('PlnState ' . $i);
             $fixture->setDepositDate(new DateTimeImmutable("2020-{$i}-{$i}"));
-            $fixture->setDepositReceipt('http://example.com/reciept/' . $i);
+            $fixture->setDepositReceipt('http://example.com/receipt/' . $i);
             $fixture->setProcessingLog("<p>This is paragraph {$i}</p>");
             $fixture->setHarvestAttempts($i);
             $fixture->setProvider($this->getReference('provider.' . $i));

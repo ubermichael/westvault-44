@@ -64,7 +64,7 @@ class XmlParser {
         $changes = 0;
         while ($buffer = fread($fromHandle, self::BLOCKSIZE)) {
             $filtered = iconv('UTF-8', 'UTF-8//IGNORE', $buffer);
-            $changes += (mb_strlen($buffer) - mb_strlen($filtered));
+            $changes += (mb_strlen($buffer, '8bit') - mb_strlen($filtered, '8bit'));
             fwrite($toHandle, $filtered);
         }
 

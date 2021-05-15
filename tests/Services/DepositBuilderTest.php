@@ -88,13 +88,9 @@ class DepositBuilderTest extends ControllerBaseCase {
 
     public function depositData() {
         return [
-            ['2.4.8', 'getProviderVersion'],
-            [['publishingMode' => 'Open'], 'getLicense'],
             ['', 'getFileType'],
             ['00FD6D96-0155-43A4-97F7-2C6EE8EBFF09', 'getDepositUuid'],
             ['add', 'getAction'],
-            ['44', 'getVolume'],
-            ['4', 'getIssue'],
             ['sha-1', 'getChecksumType'],
             ['25B0BD51BB05C145672617FCED484C9E71EC553B', 'getChecksumValue'],
             ['http://example.com//00FD6D96-0155-43A4-97F7-2C6EE8EBFF09', 'getUrl'],
@@ -102,8 +98,8 @@ class DepositBuilderTest extends ControllerBaseCase {
             ['depositedByProvider', 'getState'],
             [[], 'getErrorLog'],
             [null, 'getPlnState'],
-            [null, 'getPackageChecksumType'],
-            [null, 'getPackageChecksumValue'],
+            [null, 'getChecksumType'],
+            [null, 'getChecksumValue'],
             [null, 'getDepositDate'],
             [null, 'getDepositReceipt'],
             [0, 'getHarvestAttempts'],

@@ -178,18 +178,18 @@ class ProviderTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'provider[uuid]' => 'Updated Uuid',
+            'provider[uuid]' => '137AF186-8C2E-4DBD-BE13-A46467742A39',
             'provider[name]' => 'Updated Name',
-            'provider[email]' => 'Updated Email',
+            'provider[email]' => 'updated@example.com',
         ]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/provider/1'));
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Uuid")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("137AF186-8C2E-4DBD-BE13-A46467742A39")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Name")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Email")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("updated@example.com")')->count());
     }
 
     /**
@@ -222,18 +222,18 @@ class ProviderTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'provider[uuid]' => 'New Uuid',
+            'provider[uuid]' => '137AF186-8C2E-4DBD-BE13-A46467742A39',
             'provider[name]' => 'New Name',
-            'provider[email]' => 'New Email',
+            'provider[email]' => 'new@example.com',
         ]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Uuid")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("137AF186-8C2E-4DBD-BE13-A46467742A39")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Name")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Email")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("new@example.com")')->count());
     }
 
     /**

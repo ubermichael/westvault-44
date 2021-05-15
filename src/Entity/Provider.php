@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Provider.
@@ -48,6 +49,7 @@ class Provider extends AbstractEntity {
      *
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\Email(mode="html5",normalizer="trim")
      */
     private $email;
 
@@ -81,7 +83,7 @@ class Provider extends AbstractEntity {
     }
 
     public function __toString() : string {
-        return $this->name;
+        return $this->name ?? '(unknown)';
     }
 
     public function getUuid() : ?string {
@@ -89,7 +91,7 @@ class Provider extends AbstractEntity {
     }
 
     public function setUuid(string $uuid) : self {
-        $this->uuid = $uuid;
+        $this->uuid = mb_strtoupper($uuid);
 
         return $this;
     }
@@ -119,6 +121,16 @@ class Provider extends AbstractEntity {
      */
     public function getDeposits() : Collection {
         return $this->deposits;
+    }
+
+    public function getCompletedDeposits() : Collection {
+        $collection = new ArrayCollection();
+        foreach($this->deposits as $d) {
+            if($d->getState() === 'completed') {
+                $collection[] = $d;
+            }
+        }
+        return $collection;
     }
 
     public function addDeposit(Deposit $deposit) : self {

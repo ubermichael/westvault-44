@@ -40,6 +40,14 @@ class SwordClient {
     ];
 
     /**
+     * All providers are given the same title in LOCKSS/LOCKSSOMatic to
+     * enable use of the LOCKSS subscription manager.
+     *
+     * @var string
+     */
+    private $plnProviderTitle;
+
+    /**
      * File system utility.
      *
      * @var Filesystem
@@ -103,6 +111,14 @@ class SwordClient {
         $this->templating = $templating;
         $this->fs = new Filesystem();
         $this->client = new Client(self::CONF);
+    }
+
+    public function getPlnProviderTitle() : string {
+        return $this->plnProviderTitle;
+    }
+
+    public function setPlnProviderTitle(string $plnProviderTitle) : void {
+        $this->plnProviderTitle = $plnProviderTitle;
     }
 
     /**
@@ -206,7 +222,10 @@ class SwordClient {
     public function createDeposit(Deposit $deposit) {
         $sd = $this->serviceDocument();
         $xml = $this->templating->render('sword/deposit.xml.twig', [
+            'title' => 'Deposits from ' . $deposit->getInstitution(),
+            'publisher' => 'WestVault Staging Server',
             'deposit' => $deposit,
+            'plnProviderTitle' => $this->plnProviderTitle,
         ]);
         if ($this->saveXml) {
             $path = $this->fp->getStagingBagPath($deposit) . '.xml';

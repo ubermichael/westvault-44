@@ -75,11 +75,6 @@ class ProviderBuilderTest extends ControllerBaseCase {
         $this->assertInstanceOf(Provider::class, $this->provider);
     }
 
-    public function testGetContacted() : void {
-        $this->provider = $this->builder->fromXml($this->getXml(), 'B99FE131-48B5-440A-A552-4F1BF2BFDE82');
-        $this->assertInstanceOf(DateTimeImmutable::class, $this->provider->getContacted());
-    }
-
     /**
      * @dataProvider providerXmlData
      *
@@ -94,16 +89,8 @@ class ProviderBuilderTest extends ControllerBaseCase {
     public function providerXmlData() {
         return [
             ['B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'getUuid'],
-            [null, 'getOjsVersion'],
-            [null, 'getNotified'],
-            ['Intl J Test', 'getTitle'],
-            ['0000-0000', 'getIssn'],
-            ['http://example.com/ijt', 'getUrl'],
-            ['healthy', 'getStatus'],
-            [false, 'getTermsAccepted'],
+            ['Intl J Test', 'getName'],
             ['user@example.com', 'getEmail'],
-            ['Publisher institution', 'getPublisherName'],
-            ['http://publisher.example.com', 'getPublisherUrl'],
         ];
     }
 
@@ -121,22 +108,14 @@ class ProviderBuilderTest extends ControllerBaseCase {
     public function providerRequestData() {
         return [
             ['B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'getUuid'],
-            [null, 'getOjsVersion'],
-            [null, 'getNotified'],
-            [null, 'getTitle'],
-            [null, 'getIssn'],
-            ['http://example.com/provider', 'getUrl'],
-            ['new', 'getStatus'],
-            [false, 'getTermsAccepted'],
+            [null, 'getName'],
             ['unknown@unknown.com', 'getEmail'],
-            [null, 'getPublisherName'],
-            [null, 'getPublisherUrl'],
         ];
     }
 
     public function testFromRequestExisting() : void {
-        $this->provider = $this->builder->fromRequest(ProviderFixtures::UUIDS[1], 'http://example.com/provider/0');
-        $this->assertSame('healthy', $this->provider->getStatus());
+        $provider = $this->builder->fromRequest(ProviderFixtures::UUIDS[1], 'http://example.com/provider/0');
+        $this->assertNotNull($provider);
     }
 
     protected function setup() : void {

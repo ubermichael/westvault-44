@@ -222,7 +222,7 @@ class Deposit extends AbstractEntity {
     }
 
     public function setDepositUuid(string $depositUuid) : self {
-        $this->depositUuid = $depositUuid;
+        $this->depositUuid = mb_strtoupper($depositUuid);
 
         return $this;
     }
@@ -348,7 +348,7 @@ class Deposit extends AbstractEntity {
         return $this->depositReceipt;
     }
 
-    public function setDepositReceipt(string $depositReceipt) : self {
+    public function setDepositReceipt(?string $depositReceipt) : self {
         $this->depositReceipt = $depositReceipt;
 
         return $this;

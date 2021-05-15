@@ -8,7 +8,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace App\Command;
+namespace App\Command\Shell;
 
 use Exception;
 use Symfony\Component\Console\Command\Command;
