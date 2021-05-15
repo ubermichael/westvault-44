@@ -27,20 +27,12 @@ class Depositor {
     private $client;
 
     /**
-     * Maximum OJS version or null.
-     *
-     * @var null|string
-     */
-    private $heldVersions;
-
-    /**
      * Build the service.
      *
      * @param string $heldVersions
      */
-    public function __construct(SwordClient $client, $heldVersions) {
+    public function __construct(SwordClient $client) {
         $this->client = $client;
-        $this->heldVersions = $heldVersions;
     }
 
     /**
@@ -49,10 +41,6 @@ class Depositor {
      * @return null|bool|string
      */
     public function processDeposit(Deposit $deposit) {
-        if ($this->heldVersions && version_compare($deposit->getProviderVersion(), $this->heldVersions, '>=')) {
-            return 'hold';
-        }
-
         return $this->client->createDeposit($deposit);
     }
 }

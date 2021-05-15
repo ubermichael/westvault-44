@@ -38,11 +38,19 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    # Alias the bw server so it can be used in Twig templates.
+    blackwhitelist:
+        class: App\Services\BlackWhiteList
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    App\Command\Shell\UpgradeCommand:
+        arguments:
+            $oldEm: '@doctrine.dbal.oldversion_connection'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -59,10 +67,6 @@ services:
     App\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
-
-    # Alias the bw server so it can be used in Twig templates.
-    blackwhitelist:
-        class: App\Services\BlackWhiteList
 
     App\Services\FilePaths:
         arguments:

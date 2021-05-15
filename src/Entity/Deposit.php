@@ -46,11 +46,8 @@ class Deposit extends AbstractEntity {
     private $institution;
 
     /**
-     * Bagit doesn't understand compressed files that don't have a file
-     * extension. So set the file type, and build file names from that.
-     *
      * @var string
-     * @ORM\Column(type="string", nullable=false);
+     * @ORM\Column(type="string", nullable=true);
      */
     private $fileType;
 

@@ -123,21 +123,20 @@ class UpgradeCommand extends Command {
     public function upgradeTable($table, callable $callback) : void {
         $countQuery = $this->source->executeQuery("SELECT count(*) c FROM {$table}");
         $countQuery->execute();
-        $countRow = $countQuery->fetchNumeric();
+        $countRow = $countQuery->fetchAssociative();
         echo "upgrading {$countRow['c']} entities in {$table}.\n";
 
-        $query = $this->source->query("SELECT * FROM {$table}");
+        $query = $this->source->executeQuery("SELECT * FROM {$table}");
         $n = 0;
         $query->execute();
         echo "{$n}\r";
-        while ($row = $query->fetchOne()) {
+        while ($row = $query->fetchAssociative()) {
             $entity = $callback($row);
             if ($entity) {
                 $this->em->persist($entity);
                 $this->em->flush();
                 $this->em->clear();
                 $this->setIdMap(get_class($entity), $row['id'], $entity->getId());
-                $this->em->detach($entity);
             }
             $n++;
             echo "{$n}\r";
@@ -182,7 +181,7 @@ class UpgradeCommand extends Command {
         $callback = function ($row) {
             $entry = new User();
             $entry->setEmail($row['username']);
-            $entry->setActive(1 === $row['enabled']);
+            $entry->setActive(true);
             $entry->setPassword($row['password']);
             $entry->setRoles(unserialize($row['roles']));
             $entry->setFullname($row['fullname']);
@@ -203,6 +202,7 @@ class UpgradeCommand extends Command {
             $term = new TermOfUse();
             $term->setWeight($row['weight']);
             $term->setKeyCode($row['key_code']);
+            $term->setLangCode('en_CA');
             $term->setContent($row['content']);
             $term->setCreated(new DateTimeImmutable($row['created']));
             $term->setUpdated(new DateTimeImmutable($row['updated']));
@@ -283,18 +283,16 @@ class UpgradeCommand extends Command {
             $deposit->setSize($row['size']);
             $deposit->setState($row['state']);
             $deposit->setPlnState($row['pln_state']);
-            $deposit->setSize($row['package_size']);
-            $deposit->setChecksumType($row['package_checksum_type']);
-            $deposit->setChecksumValue($row['package_checksum_value']);
+            $deposit->setSize($row['size']);
+            $deposit->setChecksumType($row['checksum_type']);
+            $deposit->setChecksumValue($row['checksum_value']);
             if ($row['deposit_date']) {
                 $deposit->setDepositDate(new DateTimeImmutable($row['deposit_date']));
             }
-            if ( ! preg_match('|^http://preserve\.coppul\.ca|', $row['deposit_receipt'])) {
-                $deposit->setDepositReceipt($row['deposit_receipt']);
-            }
+            $deposit->setDepositReceipt($row['deposit_receipt']);
             $deposit->setProcessingLog($row['processing_log']);
             $deposit->setErrorLog(unserialize($row['error_log']));
-            $deposit->setHarvestAttempts($row['harvest_attempts']);
+            $deposit->setHarvestAttempts((int)$row['harvest_attempts']);
 
             return $deposit;
         };
@@ -326,11 +324,6 @@ class UpgradeCommand extends Command {
      *                   If an error occurred.
      */
     public function execute(InputInterface $input, OutputInterface $output) : void {
-        if ( ! $input->getOption('force')) {
-            $output->writeln('Will not run without --force.');
-
-            exit;
-        }
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->source->getConfiguration()->setSQLLogger(null);
 
