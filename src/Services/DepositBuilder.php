@@ -56,16 +56,9 @@ class DepositBuilder {
         ]);
         $action = 'edit';
         if ( ! $deposit) {
-            $action = 'add';
             $deposit = new Deposit();
             $deposit->setDepositUuid($uuid);
         }
-        if ('add' === $action) {
-            $deposit->addToProcessingLog('Deposit received.');
-        } else {
-            $deposit->addToProcessingLog('Deposit edited or reset by provider manager.');
-        }
-        $deposit->setAction($action);
 
         return $deposit;
     }
@@ -77,12 +70,13 @@ class DepositBuilder {
      */
     public function fromXml(Provider $provider, SimpleXMLElement $xml) {
         $id = Xpath::getXmlValue($xml, '//atom:id');
-        $deposit = $this->findDeposit(mb_substr($id, 9, 36));
-        if ( ! $deposit) {
+        $uuid = mb_substr($id, 9, 36);
+        $deposit = $this->findDeposit($uuid);
+        if ( ! $deposit->getId()) {
             $deposit = new Deposit();
-            $deposit->setDepositUuid(mb_substr($id, 9, 36));
             $deposit->setAction('add');
             $deposit->addToProcessingLog('Deposit received.');
+            $deposit->setDepositUuid($uuid);
         } else {
             $deposit->setAction('edit');
             $deposit->addToProcessingLog('Deposit edited or reset by provider.');

@@ -98,8 +98,6 @@ class DepositBuilderTest extends ControllerBaseCase {
             ['depositedByProvider', 'getState'],
             [[], 'getErrorLog'],
             [null, 'getPlnState'],
-            [null, 'getChecksumType'],
-            [null, 'getChecksumValue'],
             [null, 'getDepositDate'],
             [null, 'getDepositReceipt'],
             [0, 'getHarvestAttempts'],

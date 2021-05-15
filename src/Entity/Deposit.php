@@ -252,7 +252,7 @@ class Deposit extends AbstractEntity {
     }
 
     public function setChecksumType(string $checksumType) : self {
-        $this->checksumType = $checksumType;
+        $this->checksumType = mb_strtolower($checksumType);
 
         return $this;
     }
