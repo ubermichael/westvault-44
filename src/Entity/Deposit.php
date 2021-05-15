@@ -204,7 +204,7 @@ class Deposit extends AbstractEntity {
         return $this->institution;
     }
 
-    public function setInstitution(string $institution) : self {
+    public function setInstitution(?string $institution) : self {
         $this->institution = $institution;
 
         return $this;
@@ -265,7 +265,7 @@ class Deposit extends AbstractEntity {
     }
 
     public function setChecksumValue(string $checksumValue) : self {
-        $this->checksumValue = $checksumValue;
+        $this->checksumValue = mb_strtoupper($checksumValue);
 
         return $this;
     }
@@ -306,6 +306,13 @@ class Deposit extends AbstractEntity {
 
     public function setErrorLog(array $errorLog) : self {
         $this->errorLog = $errorLog;
+
+        return $this;
+    }
+
+    public function addErrorLog($error) : self {
+        $this->errorLog[] = $error;
+        $this->errorCount++;
 
         return $this;
     }
@@ -358,6 +365,11 @@ class Deposit extends AbstractEntity {
         $this->processingLog = $processingLog;
 
         return $this;
+    }
+
+    public function addToProcessingLog(string $content) : void {
+        $date = date(DateTime::ATOM);
+        $this->processingLog .= "{$date}\n{$content}\n\n";
     }
 
     public function getHarvestAttempts() : ?int {

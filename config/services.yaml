@@ -59,3 +59,30 @@ services:
     App\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
+
+    # Alias the bw server so it can be used in Twig templates.
+    blackwhitelist:
+        class: App\Services\BlackWhiteList
+
+    App\Services\FilePaths:
+        arguments:
+            $root: '%pln.data_dir%'
+            $projectDir: '%kernel.project_dir%'
+
+    App\Services\Processing\Harvester:
+        arguments:
+            $maxHarvestAttempts: '%pln.max_harvest_attempts%'
+
+    App\Services\Processing\VirusScanner:
+        arguments:
+            $socketPath: '%pln.clamd_socket%'
+
+    App\Services\Processing\StatusChecker:
+        arguments:
+            $cleanup: '%pln.remove_completed_deposits%'
+
+    App\Services\SwordClient:
+        arguments:
+            $serviceUri: '%pln.service_uri%'
+            $uuid: '%pln.uuid%'
+            $saveXml: '%pln.save_deposit_xml%'

@@ -13,3 +13,6 @@ services:
     test.App\Repository\TermOfUseRepository: '@App\Repository\TermOfUseRepository'
     test.App\Repository\TermOfUseHistoryRepository: '@App\Repository\TermOfUseHistoryRepository'
     test.App\Repository\WhitelistRepository: '@App\Repository\WhitelistRepository'
+
+    blackwhitelist: '@App\Services\BlackWhiteList'
+    test.App\Services\DepositBuilder: '@App\Services\DepositBuilder'

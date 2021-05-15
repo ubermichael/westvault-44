@@ -1,7 +1,7 @@
 {
     "type": "project",
-    "name": "ubermichael/pkppln",
-    "description": "Public Knowledge Project Preservation Network Staging Server",
+    "name": "ubermichael/westvault",
+    "description": "Coppul WestVault Staging Server",
     "license": "MIT",
     "require": {
         "php": "^7.4",
