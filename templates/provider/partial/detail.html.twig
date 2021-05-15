@@ -15,24 +15,7 @@
         <tr>
             <th>Email</th>
             <td>
-                {{ provider.email }}
-            </td>
-        </tr>
-
-        <tr>
-            <th>Deposit</th>
-            <td>
-                {% if provider.deposits|length > 0 %}
-                    <ul>
-                        {% for deposit in provider.deposits %}
-                            <li>
-                                <a href='{{ path("deposit_show", {"id":deposit.id }) }}'>
-                                    {{ deposit }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+                <a href='mailto:{{ provider.email }}'>{{ provider.email }}</a>
             </td>
         </tr>
         <tr>
@@ -46,4 +29,8 @@
     </tbody>
 </table>
 
+<h2>Deposits</h2>
+
+{% embed 'deposit/partial/table.html.twig' with {'deposits': provider.deposits} %}
+{% endembed %}
 

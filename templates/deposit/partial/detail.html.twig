@@ -63,7 +63,9 @@
         <tr>
             <th>Error Log</th>
             <td>
-                {% if deposit.errorLog %}{{ deposit.errorLog|join(', ') }}{% endif %}
+                {% for log in deposit.errorLog %}
+                        <p>{{ log }}</p>
+                {% endfor %}
             </td>
         </tr>
         <tr>
@@ -93,7 +95,7 @@
         <tr>
             <th>Processing Log</th>
             <td>
-                {{ deposit.processingLog|raw }}
+                {{ deposit.processingLog|nl2br }}
             </td>
         </tr>
         <tr>
