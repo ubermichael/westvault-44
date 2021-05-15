@@ -12,6 +12,7 @@ namespace App\Repository;
 
 use App\Entity\TermOfUse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -50,4 +51,32 @@ class TermOfUseRepository extends ServiceEntityRepository {
 
         return $qb->getQuery();
     }
+
+    /**
+     * Get the terms, ordered by weight.
+     *
+     * @return Collection|TermOfUse[]
+     */
+    public function getTerms()
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->orderBy('t.weight', 'ASC')
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+    /**
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getLastUpdated() {
+        return $this->_em->createQueryBuilder()
+            ->select('MAX(t.updated)')
+            ->from(TermOfUse::class, 't')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }

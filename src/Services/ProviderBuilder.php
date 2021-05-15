@@ -62,17 +62,18 @@ class ProviderBuilder {
      * The provider with UUID $uuid has contacted the PLN.
      *
      * @param string $uuid
-     * @param string $url
+     * @param string $name
      *
      * @return Provider
      */
-    public function fromRequest($uuid, $url) {
+    public function fromRequest($uuid, $name) {
         $provider = $this->em->getRepository('App:Provider')->findOneBy([
             'uuid' => mb_strtoupper($uuid),
         ]);
         if (null === $provider) {
             $provider = new Provider();
             $provider->setUuid($uuid);
+            $provider->setName($name);
             $provider->setEmail('unknown@unknown.com');
             $this->em->persist($provider);
         }

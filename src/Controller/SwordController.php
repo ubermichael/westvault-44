@@ -22,6 +22,7 @@ use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SimpleXMLElement;
@@ -61,6 +62,14 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
     public function __construct(BlackWhiteList $blackwhitelist, EntityManagerInterface $em) {
         $this->blackwhitelist = $blackwhitelist;
         $this->em = $em;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @required
+     */
+    public function setLogger(LoggerInterface $logger) {
+        $this->logger = $logger;
     }
 
     /**
@@ -182,7 +191,7 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
             throw new BadRequestHttpException('Missing On-Behalf-Of header.', null, 400);
         }
         if ( ! $providerName) {
-            throw new BadRequestHttpException('Missing Provider-Url header.', null, 400);
+            throw new BadRequestHttpException('Missing Provider-Name header.', null, 400);
         }
 
         $provider = $builder->fromRequest($obh, $providerName);
