@@ -65,14 +65,6 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
     }
 
     /**
-     * @param LoggerInterface $logger
-     * @required
-     */
-    public function setLogger(LoggerInterface $logger) {
-        $this->logger = $logger;
-    }
-
-    /**
      * Fetch an HTTP header.
      *
      * Checks the HTTP headers for $key and X-$key variant. If the app
@@ -165,6 +157,13 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
         } catch (Exception $e) {
             throw new BadRequestHttpException('Cannot parse request XML.', $e, Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    /**
+     * @required
+     */
+    public function setLogger(LoggerInterface $logger) : void {
+        $this->logger = $logger;
     }
 
     /**

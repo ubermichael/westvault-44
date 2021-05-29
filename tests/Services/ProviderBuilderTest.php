@@ -14,7 +14,6 @@ use App\DataFixtures\ProviderFixtures;
 use App\Entity\Provider;
 use App\Services\ProviderBuilder;
 use App\Utilities\Namespaces;
-use DateTimeImmutable;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
 /**

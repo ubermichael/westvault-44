@@ -292,7 +292,7 @@ class UpgradeCommand extends Command {
             $deposit->setDepositReceipt($row['deposit_receipt']);
             $deposit->setProcessingLog($row['processing_log']);
             $deposit->setErrorLog(unserialize($row['error_log']));
-            $deposit->setHarvestAttempts((int)$row['harvest_attempts']);
+            $deposit->setHarvestAttempts((int) $row['harvest_attempts']);
 
             return $deposit;
         };

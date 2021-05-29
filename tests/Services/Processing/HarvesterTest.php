@@ -94,7 +94,7 @@ class HarvesterTest extends ControllerBaseCase {
 
     public function testCheckSize() : void {
         $deposit = new Deposit();
-        $deposit->setSize("1");
+        $deposit->setSize('1');
         $deposit->setUrl('http://example.com/deposit');
 
         $mock = new MockHandler([
@@ -110,7 +110,7 @@ class HarvesterTest extends ControllerBaseCase {
     public function testCheckSizeBadResponse() : void {
         $this->expectException(Exception::class);
         $deposit = new Deposit();
-        $deposit->setSize("1");
+        $deposit->setSize('1');
         $deposit->setUrl('http://example.com/deposit');
 
         $mock = new MockHandler([
@@ -125,7 +125,7 @@ class HarvesterTest extends ControllerBaseCase {
     public function testCheckSizeContentLengthMissing() : void {
         $this->expectException(Exception::class);
         $deposit = new Deposit();
-        $deposit->setSize("1");
+        $deposit->setSize('1');
         $deposit->setUrl('http://example.com/deposit');
 
         $mock = new MockHandler([
@@ -140,7 +140,7 @@ class HarvesterTest extends ControllerBaseCase {
     public function testCheckSizeContentLengthZero() : void {
         $this->expectException(Exception::class);
         $deposit = new Deposit();
-        $deposit->setSize("100");
+        $deposit->setSize('100');
         $deposit->setUrl('http://example.com/deposit');
 
         $mock = new MockHandler([
@@ -155,7 +155,7 @@ class HarvesterTest extends ControllerBaseCase {
     public function testCheckSizeContentLengthMismatch() : void {
         $this->expectException(Exception::class);
         $deposit = new Deposit();
-        $deposit->setSize("100");
+        $deposit->setSize('100');
         $deposit->setUrl('http://example.com/deposit');
 
         $mock = new MockHandler([
@@ -182,7 +182,7 @@ class HarvesterTest extends ControllerBaseCase {
 
         $deposit = new Deposit();
         $deposit->setUrl('http://example.com/path');
-        $deposit->setSize("1");
+        $deposit->setSize('1');
         $provider = new Provider();
         $provider->setUuid('abc123');
         $deposit->setProvider($provider);
@@ -206,7 +206,7 @@ class HarvesterTest extends ControllerBaseCase {
 
         $deposit = new Deposit();
         $deposit->setUrl('http://example.com/path');
-        $deposit->setSize("1000");
+        $deposit->setSize('1000');
         $provider = new Provider();
         $provider->setUuid('abc123');
         $deposit->setProvider($provider);

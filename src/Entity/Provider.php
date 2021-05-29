@@ -49,7 +49,7 @@ class Provider extends AbstractEntity {
      *
      * @var string
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\Email(mode="html5",normalizer="trim")
+     * @Assert\Email(mode="html5", normalizer="trim")
      */
     private $email;
 
@@ -125,11 +125,12 @@ class Provider extends AbstractEntity {
 
     public function getCompletedDeposits() : Collection {
         $collection = new ArrayCollection();
-        foreach($this->deposits as $d) {
-            if($d->getState() === 'completed') {
+        foreach ($this->deposits as $d) {
+            if ('completed' === $d->getState()) {
                 $collection[] = $d;
             }
         }
+
         return $collection;
     }
 

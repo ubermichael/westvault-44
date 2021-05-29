@@ -57,26 +57,27 @@ class TermOfUseRepository extends ServiceEntityRepository {
      *
      * @return Collection|TermOfUse[]
      */
-    public function getTerms()
-    {
+    public function getTerms() {
         $qb = $this->createQueryBuilder('t')
             ->orderBy('t.weight', 'ASC')
-            ->getQuery();
+            ->getQuery()
+        ;
 
         return $qb->getResult();
     }
 
     /**
-     * @return int|mixed|string
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @return int|mixed|string
      */
     public function getLastUpdated() {
         return $this->_em->createQueryBuilder()
             ->select('MAX(t.updated)')
             ->from(TermOfUse::class, 't')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
-
 }
