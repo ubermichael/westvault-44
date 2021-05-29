@@ -101,14 +101,14 @@ class ProviderBuilderTest extends ControllerBaseCase {
      * @param mixed $method
      */
     public function testFromRequest($expected, $method) : void {
-        $this->provider = $this->builder->fromRequest('B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'http://example.com/provider');
+        $this->provider = $this->builder->fromRequest('B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'Provider Name');
         $this->assertSame($expected, $this->provider->{$method}());
     }
 
     public function providerRequestData() {
         return [
             ['B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'getUuid'],
-            [null, 'getName'],
+            ['Provider Name', 'getName'],
             ['unknown@unknown.com', 'getEmail'],
         ];
     }
