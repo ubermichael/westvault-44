@@ -12,7 +12,14 @@
                 {{ blacklist.comment|raw }}
             </td>
         </tr>
-
+        <tr>
+            <th>Provider</th>
+            <td>
+                {% if provider %}
+                    <a href='{{ path('provider_show', {'id': provider.id}) }}'>{{ provider }}</a>
+                {% endif %}
+            </td>
+        </tr>
         <tr>
             <th>Created</th>
             <td>{{ blacklist.created|date }}</td>

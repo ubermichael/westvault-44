@@ -11,9 +11,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Blacklist;
+use App\Entity\Whitelist;
 use App\Form\BlacklistType;
 use App\Repository\BlacklistRepository;
 
+use App\Repository\ProviderRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -99,9 +101,11 @@ class BlacklistController extends AbstractController implements PaginatorAwareIn
      *
      * @return array
      */
-    public function show(Blacklist $blacklist) {
+    public function show(Blacklist $blacklist, ProviderRepository $repo) {
+        $provider = $repo->findOneBy(['uuid' => $blacklist->getUuid()]);
         return [
             'blacklist' => $blacklist,
+            'provider' => $provider,
         ];
     }
 

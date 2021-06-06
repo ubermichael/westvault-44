@@ -12,6 +12,7 @@ namespace App\Controller;
 
 use App\Entity\Whitelist;
 use App\Form\WhitelistType;
+use App\Repository\ProviderRepository;
 use App\Repository\WhitelistRepository;
 
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -99,9 +100,11 @@ class WhitelistController extends AbstractController implements PaginatorAwareIn
      *
      * @return array
      */
-    public function show(Whitelist $whitelist) {
+    public function show(Whitelist $whitelist, ProviderRepository $repo) {
+        $provider = $repo->findOneBy(['uuid' => $whitelist->getUuid()]);
         return [
             'whitelist' => $whitelist,
+            'provider' => $provider,
         ];
     }
 
