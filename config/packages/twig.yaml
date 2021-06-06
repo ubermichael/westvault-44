@@ -17,3 +17,4 @@ twig:
         pln_maxUploadSize: "%pln.max_upload%"
         pln_maxAuSize: "%pln.max_au%"
         pln_uploadChecksumType: "%pln.checksum_type%"
+        blackwhitelist: "@blackwhitelist"

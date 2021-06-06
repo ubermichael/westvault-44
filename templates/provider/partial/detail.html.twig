@@ -19,6 +19,18 @@
             </td>
         </tr>
         <tr>
+            <th>Permissions</th>
+            <td>
+                {% if blackwhitelist.isWhitelisted(provider.uuid) %}
+                    <a href='{{ path('whitelist_show', {'id': blackwhitelist.isWhitelisted(provider.uuid).id}) }}'>Whitelisted</a>
+                {% elseif blackwhitelist.isBlacklisted(provider.uuid) %}
+                    <a href='{{ path('blacklist_show', {'id': blackwhitelist.isBlacklisted(provider.uuid).id}) }}'>Whitelisted</a>
+                {% else %}
+                    No permissions
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Created</th>
             <td>{{ provider.created|date }}</td>
         </tr>

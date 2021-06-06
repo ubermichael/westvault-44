@@ -37,9 +37,10 @@ class BlackWhiteList {
      * Get an entry for the UUID.
      *
      * @param string $uuid
+     * @return null|Blacklist|Whitelist
      */
     private function getEntry(ObjectRepository $repo, $uuid) {
-        return null !== $repo->findOneBy(['uuid' => mb_strtoupper($uuid)]);
+        return $repo->findOneBy(['uuid' => mb_strtoupper($uuid)]);
     }
 
     /**
@@ -47,7 +48,7 @@ class BlackWhiteList {
      *
      * @param string $uuid
      *
-     * @return bool
+     * @return ?Whitelist
      */
     public function isWhitelisted($uuid) {
         $repo = $this->em->getRepository(Whitelist::class);
@@ -60,7 +61,7 @@ class BlackWhiteList {
      *
      * @param string $uuid
      *
-     * @return bool
+     * @return ?Blacklist
      */
     public function isBlacklisted($uuid) {
         $repo = $this->em->getRepository(Blacklist::class);

@@ -19,18 +19,15 @@ parameters:
     pln.service_uri: '%env(string:PLN_SERVICE_URI)%'
     pln.accepting: '%env(bool:PLN_ACCEPTING)%'
 
-    pln.network_default: The PKP PLN does not know about this journal yet.
-    pln.network_accepting: The PKP PLN can accept deposits from this journal.
-    pln.network_oldojs: This journal must be running OJS 2.4.8 to make deposits to the PKP PLN.
+    pln.network_default: The WestVault PLN does not know about this provider yet.
+    pln.network_accepting: The WestVault PLN can accept deposits from this provider.
 
-    pln.min_ojs_version: 2.4.8.0
-    pln.held_versions: ~
     pln.max_harvest_attempts: 5
     pln.max_au: 100000000
     pln.max_upload: 1000000
     pln.checksum_type: SHA-1
 
-    pln.institution_name: WestVault Preserved Content
+    pln.institution_name: WestVault deposits from OwnCloud
 
     page_size: 24
 

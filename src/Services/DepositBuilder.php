@@ -44,6 +44,25 @@ class DepositBuilder {
     }
 
     /**
+     * Build the URL for the deposit receipt.
+     *
+     * @param Deposit $deposit
+     *
+     * @return string
+     */
+    public function buildDepositReceiptUrl(Deposit $deposit)
+    {
+        return $this->generator->generate(
+            'sword_statement',
+            array(
+                'provider_uuid' => $deposit->getProvider()->getUuid(),
+                'deposit_uuid' => $deposit->getDepositUuid(),
+            ),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+    }
+
+    /**
      * Find and return the deposit with $uuid or create a new deposit.
      *
      * @param string $uuid
@@ -89,6 +108,7 @@ class DepositBuilder {
         $deposit->setProvider($provider);
         $deposit->setSize(Xpath::getXmlValue($xml, 'pkp:content/@size'));
         $deposit->setUrl(html_entity_decode(Xpath::getXmlValue($xml, 'pkp:content')));
+        $deposit->setDepositReceipt($this->buildDepositReceiptUrl($deposit));
         $this->em->persist($deposit);
 
         return $deposit;
