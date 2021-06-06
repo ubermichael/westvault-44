@@ -50,7 +50,6 @@ class ProviderBuilder {
             $provider = new Provider();
         }
         $provider->setUuid($uuid);
-        $provider->setName(Xpath::getXmlValue($xml, '//atom:title'));
         $provider->setEmail(Xpath::getXmlValue($xml, '//atom:email'));
         $this->em->persist($provider);
 

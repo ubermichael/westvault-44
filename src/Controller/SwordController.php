@@ -231,6 +231,11 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
         }
 
         $xml = $this->getXml($request);
+
+        $tmp = fopen('/Users/michael/deposit.xml', 'w');
+        fwrite($tmp, $xml->asXML());
+        fclose($tmp);
+
         // Update the provider metadata.
         $providerBuilder->fromXml($xml, $provider->getUuid());
         $deposit = $depositBuilder->fromXml($provider, $xml);
