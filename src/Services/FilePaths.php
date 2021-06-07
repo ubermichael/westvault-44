@@ -120,7 +120,7 @@ class FilePaths {
     public function getHarvestFile(Deposit $deposit) {
         return implode('/', [
             $this->getHarvestDir($deposit->getProvider()),
-            $deposit->getDepositUuid() . '.zip',
+            $deposit->getDepositUuid(),
         ]);
     }
 

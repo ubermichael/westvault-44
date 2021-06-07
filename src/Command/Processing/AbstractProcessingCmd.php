@@ -144,7 +144,6 @@ abstract class AbstractProcessingCmd extends Command {
         if ($limit) {
             $qb->setMaxResults($limit);
         }
-
         return $qb->getQuery()->execute();
     }
 
@@ -172,6 +171,7 @@ abstract class AbstractProcessingCmd extends Command {
             return;
         }
 
+        dump($result);
         if (is_string($result)) {
             $deposit->setState($result);
             $deposit->addToProcessingLog('Holding deposit.');
@@ -182,7 +182,7 @@ abstract class AbstractProcessingCmd extends Command {
             $deposit->setState($this->errorState());
             $deposit->addToProcessingLog($this->failureLogMessage());
         } elseif (null === $result) {
-            // dunno, do nothing I guess.
+            $output->writeln("Unknown processing result for " . $deposit->getDepositUuid());
         }
         $this->em->flush();
     }

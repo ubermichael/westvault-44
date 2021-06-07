@@ -74,7 +74,7 @@ class ScanCommand extends AbstractProcessingCmd {
      * {@inheritdoc}
      */
     public function processingState() {
-        return 'xml-validated';
+        return 'payload-validated';
     }
 
     /**

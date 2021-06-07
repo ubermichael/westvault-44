@@ -16,6 +16,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -76,6 +77,11 @@ class Harvester {
      * @var FilePaths
      */
     private $filePaths;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * Construct the harvester.
@@ -169,7 +175,7 @@ class Harvester {
                     . "HTTP {$response->getStatusCode()} - {$response->getReasonPhrase()} "
                     . "- {$deposit->getUrl()}");
         }
-        $expected = $deposit->getSize() * 1000;
+        $expected = $deposit->getSize();
         $difference = abs($reported - $expected) / (($reported + $expected) / 2.0);
         if ($difference > self::FILE_SIZE_THRESHOLD) {
             throw new Exception("Expected file size {$expected} is not close to "
@@ -202,7 +208,11 @@ class Harvester {
         } catch (Exception $e) {
             $deposit->addToProcessingLog($e->getMessage());
 
-            return;
+            return false;
         }
+    }
+
+    public function setLogger(LoggerInterface $logger) {
+        $this->logger = $logger;
     }
 }

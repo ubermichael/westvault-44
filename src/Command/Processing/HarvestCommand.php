@@ -67,7 +67,7 @@ class HarvestCommand extends AbstractProcessingCmd {
      * {@inheritdoc}
      */
     public function processingState() {
-        return 'depositedByJournal';
+        return 'depositedByProvider';
     }
 
     /**
