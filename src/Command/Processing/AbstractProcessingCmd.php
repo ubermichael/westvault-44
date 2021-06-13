@@ -171,7 +171,6 @@ abstract class AbstractProcessingCmd extends Command {
             return;
         }
 
-        dump($result);
         if (is_string($result)) {
             $deposit->setState($result);
             $deposit->addToProcessingLog('Holding deposit.');

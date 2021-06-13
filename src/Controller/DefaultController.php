@@ -17,6 +17,7 @@ use App\Services\FilePaths;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -32,6 +33,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+
+    /**
+     * The LOCKSS permision statement, required for LOCKSS to harvest
+     * content.
+     */
+    const PERMISSION_STMT = 'LOCKSS system has permission to collect, preserve, and serve this Archival Unit.';
 
     /**
      * Home page action.
@@ -93,8 +100,8 @@ class DefaultController extends AbstractController implements PaginatorAwareInte
      *
      * @return Response
      */
-    public function permissionAction(Request $request) {
-        $this->get('monolog.logger.lockss')->notice("permission - {$request->getClientIp()}");
+    public function permissionAction(Request $request, LoggerInterface $lockssLogger) {
+        $lockssLogger->notice("permission - {$request->getClientIp()}");
 
         return new Response(self::PERMISSION_STMT, Response::HTTP_OK, [
             'content-type' => 'text/plain',
@@ -111,28 +118,27 @@ class DefaultController extends AbstractController implements PaginatorAwareInte
      *
      * @return BinaryFileResponse
      */
-    public function fetchAction(Request $request, $providerUuid, $depositUuid, FilePaths $filePaths) {
+    public function fetchAction(Request $request, $providerUuid, $depositUuid, FilePaths $filePaths, LoggerInterface $lockssLogger) {
         $providerUuid = mb_strtoupper($providerUuid);
         $depositUuid = mb_strtoupper($depositUuid);
-        $logger = $this->get('monolog.logger.lockss');
-        $logger->notice("fetch - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
+        $lockssLogger->notice("fetch - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
         $em = $this->container->get('doctrine');
         $provider = $em->getRepository(Provider::class)->findOneBy(['uuid' => $providerUuid]);
         $deposit = $em->getRepository(Deposit::class)->findOneBy(['depositUuid' => $depositUuid]);
         if ( ! $deposit) {
-            $logger->error("fetch - 404 DEPOSIT NOT FOUND - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
+            $lockssLogger->error("fetch - 404 DEPOSIT NOT FOUND - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
 
             throw new NotFoundHttpException("Deposit {$providerUuid}/{$depositUuid} does not exist.");
         }
         if ($deposit->getProvider()->getId() !== $provider->getId()) {
-            $logger->error("fetch - 400 JOURNAL MISMATCH - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
+            $lockssLogger->error("fetch - 400 JOURNAL MISMATCH - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
 
             throw new BadRequestHttpException("The requested Provider ID does not match the deposit's provider ID.");
         }
         $path = $filePaths->getHarvestFile($deposit);
         $fs = new Filesystem();
         if ( ! $fs->exists($path)) {
-            $logger->error("fetch - 404 PACKAGE NOT FOUND - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
+            $lockssLogger->error("fetch - 404 PACKAGE NOT FOUND - {$request->getClientIp()} - {$providerUuid} - {$depositUuid}");
 
             throw new NotFoundHttpException("File {$providerUuid}/{$depositUuid} does not exist.");
         }

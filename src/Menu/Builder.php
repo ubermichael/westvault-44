@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -21,11 +22,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class Builder implements ContainerAwareInterface {
     use ContainerAwareTrait;
-
-    /**
-     * U+25BE, black down-pointing small triangle.
-     */
-    public const CARET = ' ▾';
 
     /**
      * Item factory.
@@ -88,9 +84,9 @@ class Builder implements ContainerAwareInterface {
             'route' => 'homepage',
         ]);
 
-//        if ( ! $this->hasRole('ROLE_USER')) {
-//            return $menu;
-//        }
+        if ( ! $this->hasRole('ROLE_USER')) {
+            return $menu;
+        }
 
         $browse = $menu->addChild('browse', [
             'uri' => '#',
