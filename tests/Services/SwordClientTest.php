@@ -43,7 +43,7 @@ class SwordClientTest extends ControllerBaseCase {
                 xmlns:lom="http://lockssomatic.info/SWORD2"
                 xmlns="http://www.w3.org/2007/app">
                 <sword:version>2.0</sword:version>
-                <!-- sword:maxUploadSize is the maximum file size in content element, measured in kB (1,000 bytes). -->
+                <!-- sword:maxUploadSize is the maximum file size in bytes. -->
                 <sword:maxUploadSize>10000</sword:maxUploadSize>
                 <lom:uploadChecksumType>SHA1</lom:uploadChecksumType>
                 <workspace>

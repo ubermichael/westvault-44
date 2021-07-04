@@ -176,7 +176,7 @@ class Harvester {
                     . "- {$deposit->getUrl()}");
         }
         $expected = $deposit->getSize();
-        $difference = abs($reported - $expected) / (($reported + $expected) / 2.0);
+        $difference = abs($reported - $expected) / max($reported, $expected);
         if ($difference > self::FILE_SIZE_THRESHOLD) {
             throw new Exception("Expected file size {$expected} is not close to "
             . "reported size {$reported}");

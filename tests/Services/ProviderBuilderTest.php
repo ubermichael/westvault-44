@@ -88,7 +88,7 @@ class ProviderBuilderTest extends ControllerBaseCase {
     public function providerXmlData() {
         return [
             ['B99FE131-48B5-440A-A552-4F1BF2BFDE82', 'getUuid'],
-            ['Intl J Test', 'getName'],
+            [null, 'getName'],
             ['user@example.com', 'getEmail'],
         ];
     }

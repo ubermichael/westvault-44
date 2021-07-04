@@ -94,7 +94,7 @@ class HarvesterTest extends ControllerBaseCase {
 
     public function testCheckSize() : void {
         $deposit = new Deposit();
-        $deposit->setSize('1');
+        $deposit->setSize('1000');
         $deposit->setUrl('http://example.com/deposit');
 
         $mock = new MockHandler([
@@ -182,7 +182,7 @@ class HarvesterTest extends ControllerBaseCase {
 
         $deposit = new Deposit();
         $deposit->setUrl('http://example.com/path');
-        $deposit->setSize('1');
+        $deposit->setSize('1024');
         $provider = new Provider();
         $provider->setUuid('abc123');
         $deposit->setProvider($provider);
@@ -206,13 +206,13 @@ class HarvesterTest extends ControllerBaseCase {
 
         $deposit = new Deposit();
         $deposit->setUrl('http://example.com/path');
-        $deposit->setSize('1000');
+        $deposit->setSize('10');
         $provider = new Provider();
         $provider->setUuid('abc123');
         $deposit->setProvider($provider);
         $result = $this->harvester->processDeposit($deposit);
         $this->assertStringContainsStringIgnoringCase('Expected file size', $deposit->getProcessingLog());
-        $this->assertNull($result);
+        $this->assertFalse($result);
     }
 
     public function testProcessDepositTooManyFails() : void {

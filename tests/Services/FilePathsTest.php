@@ -65,7 +65,7 @@ class FilePathsTest extends TestCase {
         $deposit = new Deposit();
         $deposit->setProvider($provider);
         $deposit->setDepositUuid('def456');
-        $this->assertSame('/data/restore/ABC123/DEF456.zip', $fp->getRestoreFile($deposit));
+        $this->assertSame('/data/restore/ABC123/DEF456', $fp->getRestoreFile($deposit));
     }
 
     public function testGetHarvestDir() : void {
@@ -96,7 +96,7 @@ class FilePathsTest extends TestCase {
         $deposit = new Deposit();
         $deposit->setProvider($provider);
         $deposit->setDepositUuid('def456');
-        $this->assertSame('/data/harvest/ABC123/DEF456.zip', $fp->getHarvestFile($deposit));
+        $this->assertSame('/data/harvest/ABC123/DEF456', $fp->getHarvestFile($deposit));
     }
 
     public function testGetProcessingDir() : void {
@@ -171,7 +171,7 @@ class FilePathsTest extends TestCase {
         $deposit = new Deposit();
         $deposit->setProvider($provider);
         $deposit->setDepositUuid('def456');
-        $this->assertSame('/data/staged/ABC123/DEF456.zip', $fp->getStagingBagPath($deposit));
+        $this->assertSame('/data/staged/ABC123/DEF456', $fp->getStagingBagPath($deposit));
     }
 
     public function testGetOnixPath() : void {

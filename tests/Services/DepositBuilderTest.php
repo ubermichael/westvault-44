@@ -26,7 +26,6 @@ class DepositBuilderTest extends ControllerBaseCase {
 
     private function getXml() {
         $data = <<<'ENDXML'
-            <?xml version="1.0" encoding="utf-8"?>
             <entry xmlns='http://www.w3.org/2005/Atom' 
                    xmlns:dcterms='http://purl.org/dc/terms/' 
                    xmlns:pkp='http://pkp.sfu.ca/SWORD'>
@@ -99,7 +98,7 @@ class DepositBuilderTest extends ControllerBaseCase {
             [[], 'getErrorLog'],
             [null, 'getPlnState'],
             [null, 'getDepositDate'],
-            [null, 'getDepositReceipt'],
+            ['http://localhost/pkppln-44/public/api/sword/2.0/cont-iri/CF566EC4-0469-42B4-9C0C-8EC3154DDE87/00FD6D96-0155-43A4-97F7-2C6EE8EBFF09/state', 'getDepositReceipt'],
             [0, 'getHarvestAttempts'],
         ];
     }

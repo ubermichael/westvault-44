@@ -33,19 +33,19 @@ class BlackWhiteListTest extends ControllerBaseCase {
     }
 
     public function testIsWhitelisted() : void {
-        $this->assertTrue($this->list->isWhitelisted(WhitelistFixtures::UUIDS[0]));
-        $this->assertTrue($this->list->isWhitelisted(mb_strtolower(WhitelistFixtures::UUIDS[0])));
+        $this->assertNotNull($this->list->isWhitelisted(WhitelistFixtures::UUIDS[0]));
+        $this->assertNotNull($this->list->isWhitelisted(mb_strtolower(WhitelistFixtures::UUIDS[0])));
 
-        $this->assertFalse($this->list->isWhitelisted(BlacklistFixtures::UUIDS[0]));
-        $this->assertFalse($this->list->isWhitelisted(mb_strtolower(BlacklistFixtures::UUIDS[0])));
+        $this->assertNull($this->list->isWhitelisted(BlacklistFixtures::UUIDS[0]));
+        $this->assertNull($this->list->isWhitelisted(mb_strtolower(BlacklistFixtures::UUIDS[0])));
     }
 
     public function testIsBlacklisted() : void {
-        $this->assertTrue($this->list->isBlacklisted(BlacklistFixtures::UUIDS[0]));
-        $this->assertTrue($this->list->isBlacklisted(mb_strtolower(BlacklistFixtures::UUIDS[0])));
+        $this->assertNotNUll($this->list->isBlacklisted(BlacklistFixtures::UUIDS[0]));
+        $this->assertNotNull($this->list->isBlacklisted(mb_strtolower(BlacklistFixtures::UUIDS[0])));
 
-        $this->assertFalse($this->list->isBlacklisted(WhitelistFixtures::UUIDS[0]));
-        $this->assertFalse($this->list->isBlacklisted(mb_strtolower(WhitelistFixtures::UUIDS[0])));
+        $this->assertNull($this->list->isBlacklisted(WhitelistFixtures::UUIDS[0]));
+        $this->assertNull($this->list->isBlacklisted(mb_strtolower(WhitelistFixtures::UUIDS[0])));
     }
 
     protected function setup() : void {

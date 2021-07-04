@@ -90,7 +90,7 @@ class FilePaths {
     public function getRestoreFile(Deposit $deposit) {
         return implode('/', [
             $this->getRestoreDir($deposit->getProvider()),
-            $deposit->getDepositUuid() . '.zip',
+            $deposit->getDepositUuid(),
         ]);
     }
 
@@ -185,7 +185,7 @@ class FilePaths {
     public function getStagingBagPath(Deposit $deposit) {
         $path = $this->getStagingDir($deposit->getProvider());
 
-        return $path . '/' . $deposit->getDepositUuid() . '.zip';
+        return $path . '/' . $deposit->getDepositUuid();
     }
 
     /**
