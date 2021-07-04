@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\Deposit;
 use App\Entity\Provider;
 use App\Entity\TermOfUse;
+use App\Repository\DocumentRepository;
 use App\Services\FilePaths;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -55,42 +56,6 @@ class DefaultController extends AbstractController implements PaginatorAwareInte
         }
 
         return $this->render('default/index_user.html.twig');
-    }
-
-    /**
-     * View one document.
-     *
-     * @param string $path
-     * @Route("/docs/{path}", name="doc_view")
-     * @Template
-     *
-     * @return array
-     */
-    public function docsViewAction($path) {
-        $em = $this->container->get('doctrine');
-        $user = $this->getUser();
-        $doc = $em->getRepository('AppBundle:Document')->findOneBy([
-            'path' => $path,
-        ]);
-        if ( ! $doc) {
-            throw new NotFoundHttpException("The requested page {$path} could not be found.");
-        }
-
-        return ['doc' => $doc];
-    }
-
-    /**
-     * @Route("/docs", name="doc_list")
-     * @Template
-     *
-     * @return array
-     */
-    // Must be after docsViewAction()
-    public function docsListAction() {
-        $em = $this->container->get('doctrine');
-        $docs = $em->getRepository('AppBundle:Document')->findAll();
-
-        return ['docs' => $docs];
     }
 
     /**

@@ -105,10 +105,6 @@ class Builder implements ContainerAwareInterface {
             'label' => 'Deposits',
             'route' => 'deposit_index',
         ]);
-        $browse->addChild('document', [
-            'label' => 'Documents',
-            'route' => 'document_index',
-        ]);
         $browse->addChild('provider', [
             'label' => 'Providers',
             'route' => 'provider_index',
