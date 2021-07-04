@@ -93,6 +93,14 @@
             </td>
         </tr>
         <tr>
+            <th>Processed Deposit URL</th>
+            <td>
+                <a href='{{ path('fetch', {'providerUuid': deposit.provider.uuid, 'depositUuid': deposit.depositUuid}) }}'>
+                    {{ path('fetch', {'providerUuid': deposit.provider.uuid, 'depositUuid': deposit.depositUuid}) }}
+                </a>
+            </td>
+        </tr>
+        <tr>
             <th>Processing Log</th>
             <td>
                 {{ deposit.processingLog|nl2br }}

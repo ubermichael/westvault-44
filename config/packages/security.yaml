@@ -55,5 +55,8 @@ security:
         - { path: ^/fetch, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/permission, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
+        # Terms of use feeds
+        - { path: ^/feeds, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
         # Entity controllers etc.
         - { path: ^/*, role: ROLE_USER }

@@ -8,7 +8,6 @@ services:
 
     test.App\Repository\BlacklistRepository: '@App\Repository\BlacklistRepository'
     test.App\Repository\DepositRepository: '@App\Repository\DepositRepository'
-    test.App\Repository\DocumentRepository: '@App\Repository\DocumentRepository'
     test.App\Repository\ProviderRepository: '@App\Repository\ProviderRepository'
     test.App\Repository\TermOfUseRepository: '@App\Repository\TermOfUseRepository'
     test.App\Repository\TermOfUseHistoryRepository: '@App\Repository\TermOfUseHistoryRepository'
