@@ -22,8 +22,8 @@ class TermOfUseFixtures extends Fixture {
         for ($i = 1; $i <= 4; $i++) {
             $fixture = new TermOfUse();
             $fixture->setWeight($i);
-            $fixture->setKeyCode('KeyCode ' . $i);
-            $fixture->setLangCode('LangCode ' . $i);
+            $fixture->setKeyCode('KeyCode_' . $i);
+            $fixture->setLangCode('LangCode_' . $i);
             $fixture->setContent("<p>This is paragraph {$i}</p>");
             $em->persist($fixture);
             $this->setReference('termofuse.' . $i, $fixture);
