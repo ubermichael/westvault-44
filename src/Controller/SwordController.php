@@ -304,8 +304,10 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
             throw new BadRequestHttpException('Deposit does not belong to provider.', null, 400);
         }
         $xml = $this->getXml($request);
-        $newDeposit = $builder->fromXml($provider, $xml);
-        $newDeposit->setAction('edit');
+        $deposit->setAction('edit');
+        $deposit->addToProcessingLog('Deposit edited or reset by provider.');
+        $builder->update($deposit, $xml);
+
         $this->em->flush();
 
         // @var Response

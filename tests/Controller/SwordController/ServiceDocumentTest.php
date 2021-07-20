@@ -18,12 +18,12 @@ class ServiceDocumentTest extends AbstractSwordTestCase {
 
 	public function testServiceDocumentNoOBH() {
 		$this->client->request('GET', '/api/sword/2.0/sd-iri', array(), array(), array(
-			'HTTP_Journal-Url' => 'http://example.com'
+			'HTTP_Provider-Name' => 'http://example.com'
 		));
 		$this->assertEquals(400, $this->client->getResponse()->getStatusCode());
 	}
 
-	public function testServiceDocumentNoJournalUrl() {
+	public function testServiceDocumentNoProviderName() {
 		$this->client->request('GET', '/api/sword/2.0/sd-iri', array(), array(), array(
             'HTTP_On-Behalf-Of' => ProviderFixtures::UUIDS[0],
 		));
@@ -38,15 +38,15 @@ class ServiceDocumentTest extends AbstractSwordTestCase {
 		$this->assertEquals(400, $this->client->getResponse()->getStatusCode());
 	}
 
-	public function testServiceDocumentBadJournalUrl() {
+	public function testServiceDocumentBadProviderName() {
 		$this->client->request('GET', '/api/sword/2.0/sd-iri', array(), array(), array(
             'HTTP_On-Behalf-Of' => ProviderFixtures::UUIDS[0],
-			'HTTP_Journal-Url' => ''
+			'HTTP_Provider-Name' => ''
 		));
 		$this->assertEquals(400, $this->client->getResponse()->getStatusCode());
 	}
 
-	public function testServiceDocumentContentNewJournal() {
+	public function testServiceDocumentContentNewProvider() {
 		$this->assertCount(4, $this->entityManager->getRepository(Provider::class)->findAll());
 
 		$this->client->request('GET', '/api/sword/2.0/sd-iri', array(), array(), array(
@@ -69,7 +69,7 @@ class ServiceDocumentTest extends AbstractSwordTestCase {
 		$this->assertNotNull($provider);
 	}
 
-	public function testServiceDocumentContentWhitelistedJournal() {
+	public function testServiceDocumentContentWhitelistedProvider() {
 		$this->assertCount(4, $this->entityManager->getRepository(Provider::class)->findAll());
 
 		$this->client->request('GET', '/api/sword/2.0/sd-iri', array(), array(), array(

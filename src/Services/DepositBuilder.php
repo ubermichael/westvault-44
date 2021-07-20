@@ -73,13 +73,24 @@ class DepositBuilder {
         $deposit = $this->em->getRepository(Deposit::class)->findOneBy([
             'depositUuid' => mb_strtoupper($uuid),
         ]);
-        $action = 'edit';
         if ( ! $deposit) {
+            dump("DEPOSIT {$uuid} NOT FOUND.");
             $deposit = new Deposit();
             $deposit->setDepositUuid($uuid);
         }
 
         return $deposit;
+    }
+
+    public function update(Deposit $deposit, SimpleXMLElement $xml) {
+        $deposit->setState('depositedByProvider');
+        $deposit->setChecksumType(Xpath::getXmlValue($xml, 'pkp:content/@checksumType'));
+        $deposit->setChecksumValue(Xpath::getXmlValue($xml, 'pkp:content/@checksumValue'));
+        $deposit->setFileType('');
+        $deposit->setInstitution(Xpath::getXmlValue($xml, 'pkp:content/@institution'));
+        $deposit->setSize(Xpath::getXmlValue($xml, 'pkp:content/@size'));
+        $deposit->setUrl(html_entity_decode(Xpath::getXmlValue($xml, 'pkp:content')));
+        $deposit->setDepositReceipt($this->buildDepositReceiptUrl($deposit));
     }
 
     /**
@@ -90,27 +101,13 @@ class DepositBuilder {
     public function fromXml(Provider $provider, SimpleXMLElement $xml) {
         $id = Xpath::getXmlValue($xml, '//atom:id');
         $uuid = mb_substr($id, 9, 36);
-        $deposit = $this->findDeposit($uuid);
-        if ( ! $deposit->getId()) {
-            $deposit = new Deposit();
-            $deposit->setAction('add');
-            $deposit->addToProcessingLog('Deposit received.');
-            $deposit->setDepositUuid($uuid);
-        } else {
-            $deposit->setAction('edit');
-            $deposit->addToProcessingLog('Deposit edited or reset by provider.');
-        }
-        $deposit->setState('depositedByProvider');
-        $deposit->setChecksumType(Xpath::getXmlValue($xml, 'pkp:content/@checksumType'));
-        $deposit->setChecksumValue(Xpath::getXmlValue($xml, 'pkp:content/@checksumValue'));
-        $deposit->setFileType('');
-        $deposit->setInstitution(Xpath::getXmlValue($xml, 'pkp:content/@institution'));
+        $deposit = new Deposit();
         $deposit->setProvider($provider);
-        $deposit->setSize(Xpath::getXmlValue($xml, 'pkp:content/@size'));
-        $deposit->setUrl(html_entity_decode(Xpath::getXmlValue($xml, 'pkp:content')));
-        $deposit->setDepositReceipt($this->buildDepositReceiptUrl($deposit));
+        $deposit->setAction('add');
+        $deposit->addToProcessingLog('Deposit received.');
+        $deposit->setDepositUuid($uuid);
+        $this->update($deposit, $xml);
         $this->em->persist($deposit);
-
         return $deposit;
     }
 }
