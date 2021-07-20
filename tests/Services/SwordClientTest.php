@@ -36,7 +36,6 @@ class SwordClientTest extends ControllerBaseCase {
 
     private function serviceDocumentData() {
         return <<<'ENDXML'
-            <?xml version="1.0" ?>
             <service xmlns:dcterms="http://purl.org/dc/terms/"
                 xmlns:sword="http://purl.org/net/sword/"
                 xmlns:atom="http://www.w3.org/2005/Atom"

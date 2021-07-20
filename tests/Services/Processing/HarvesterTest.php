@@ -33,10 +33,13 @@ class HarvesterTest extends ControllerBaseCase {
     }
 
     public function testWriteDeposit() : void {
-        $body = $this->createMock(StreamInterface::class);
-        $body->method('read')->will($this->onConsecutiveCalls('abc', 'def', ''));
-        $response = $this->createMock(Response::class);
-        $response->method('getBody')->willReturn($body);
+        $mock = new MockHandler([
+            new Response(200, [], 'abcdef'),
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+        $response = $client->get('/');
+
         $fs = $this->createMock(Filesystem::class);
 
         $output = '';
@@ -50,8 +53,13 @@ class HarvesterTest extends ControllerBaseCase {
 
     public function testWriteDepositNoBody() : void {
         $this->expectException(Exception::class);
-        $response = $this->createMock(Response::class);
-        $response->method('getBody')->willReturn(null);
+
+        $mock = new MockHandler([
+            new Response(200, [], ''),
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+        $response = $client->get('/');
         $this->harvester->writeDeposit('', $response);
     }
 

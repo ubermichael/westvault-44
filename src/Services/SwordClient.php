@@ -16,10 +16,10 @@ use App\Utilities\ServiceDocument;
 use DateTimeImmutable;
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
-use function GuzzleHttp\Psr7\str;
+use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment;
@@ -166,21 +166,21 @@ class SwordClient {
      * @param string $method
      * @param string $url
      * @param mixed $xml
-     * @param Deposit $deposit
+     * @param ?Deposit $deposit
      *
-     * @throws Exception
+     * @return ResponseInterface
+     * @throws Exception|GuzzleException
      *
-     * @return Response
      */
-    public function request($method, $url, array $headers = [], $xml = null, ?Deposit $deposit = null, array $options = []) {
+    public function request(string $method, string $url, array $headers = [], $xml = null, ?Deposit $deposit = null, array $options = []) {
         try {
             $request = new Request($method, $url, $headers, $xml);
 
             return $this->client->send($request, $options);
         } catch (RequestException $e) {
-            $message = str($e->getRequest());
+            $message = $e->getRequest()->getBody()->getContents();
             if ($e->hasResponse()) {
-                $message .= "\n\n" . str($e->getResponse());
+                $message .= "\n\n" . $e->getResponse()->getBody()->getContents();
             }
             if ($deposit) {
                 $deposit->addErrorLog($message);
@@ -286,7 +286,7 @@ class SwordClient {
      */
     public function fetch(Deposit $deposit) {
         $statement = $this->statement($deposit);
-        $original = $statement->xpath('//sword:originalDeposit/@href')[0];
+        $original = (string)$statement->xpath('//sword:originalDeposit/@href')[0];
         $filepath = $this->fp->getRestoreFile($deposit);
 
         $this->request('GET', $original, [], null, $deposit, [
