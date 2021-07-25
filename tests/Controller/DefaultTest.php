@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\DataFixtures\DepositFixtures;
-use App\DataFixtures\DocumentFixtures;
 use App\DataFixtures\ProviderFixtures;
 use App\DataFixtures\TermOfUseFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
@@ -43,6 +42,9 @@ class DefaultTest extends ControllerBaseCase {
 
     /**
      * @dataProvider defaultUrls
+     *
+     * @param mixed $url
+     * @param mixed $code
      */
     public function testAnonIndex($url, $code = Response::HTTP_OK) : void {
         $crawler = $this->client->request('GET', $url);

@@ -163,14 +163,12 @@ class SwordClient {
     /**
      * Make a SWORD request.
      *
-     * @param string $method
-     * @param string $url
      * @param mixed $xml
      * @param ?Deposit $deposit
      *
-     * @return ResponseInterface
      * @throws Exception|GuzzleException
      *
+     * @return ResponseInterface
      */
     public function request(string $method, string $url, array $headers = [], $xml = null, ?Deposit $deposit = null, array $options = []) {
         try {
@@ -286,7 +284,7 @@ class SwordClient {
      */
     public function fetch(Deposit $deposit) {
         $statement = $this->statement($deposit);
-        $original = (string)$statement->xpath('//sword:originalDeposit/@href')[0];
+        $original = (string) $statement->xpath('//sword:originalDeposit/@href')[0];
         $filepath = $this->fp->getRestoreFile($deposit);
 
         $this->request('GET', $original, [], null, $deposit, [

@@ -13,6 +13,7 @@ namespace App\Command\Processing;
 use App\Entity\Deposit;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,6 +24,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Parent class for all processing commands.
  */
 abstract class AbstractProcessingCmd extends Command {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
     /**
      * Database interface.
      *
@@ -106,12 +112,19 @@ abstract class AbstractProcessingCmd extends Command {
             $input->getArgument('deposit-id'),
             $input->getOption('limit')
         );
-
+        $this->logger->notice('Processing ' . count($deposits) . ' deposits in ' . $this->processingState());
         $this->preprocessDeposits($deposits);
 
         foreach ($deposits as $deposit) {
             $this->runDeposit($deposit, $output, $input->getOption('dry-run'));
         }
+    }
+
+    /**
+     * @required
+     */
+    public function setLogger(LoggerInterface $processingLogger) : void {
+        $this->logger = $processingLogger;
     }
 
     /**
@@ -144,6 +157,7 @@ abstract class AbstractProcessingCmd extends Command {
         if ($limit) {
             $qb->setMaxResults($limit);
         }
+
         return $qb->getQuery()->execute();
     }
 
@@ -181,7 +195,7 @@ abstract class AbstractProcessingCmd extends Command {
             $deposit->setState($this->errorState());
             $deposit->addToProcessingLog($this->failureLogMessage());
         } elseif (null === $result) {
-            $output->writeln("Unknown processing result for " . $deposit->getDepositUuid());
+            $output->writeln('Unknown processing result for ' . $deposit->getDepositUuid());
         }
         $this->em->flush();
     }

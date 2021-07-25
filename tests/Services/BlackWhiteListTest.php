@@ -41,11 +41,16 @@ class BlackWhiteListTest extends ControllerBaseCase {
     }
 
     public function testIsBlacklisted() : void {
-        $this->assertNotNUll($this->list->isBlacklisted(BlacklistFixtures::UUIDS[0]));
+        $this->assertNotNull($this->list->isBlacklisted(BlacklistFixtures::UUIDS[0]));
         $this->assertNotNull($this->list->isBlacklisted(mb_strtolower(BlacklistFixtures::UUIDS[0])));
 
         $this->assertNull($this->list->isBlacklisted(WhitelistFixtures::UUIDS[0]));
         $this->assertNull($this->list->isBlacklisted(mb_strtolower(WhitelistFixtures::UUIDS[0])));
+    }
+
+    public function testIsListed() : void {
+        $this->assertTrue($this->list->isListed(WhitelistFixtures::UUIDS[0]));
+        $this->assertFalse($this->list->isListed('0E8DD35E-F0B8-4DF6-8EF2-2808E76B221F'));
     }
 
     protected function setup() : void {

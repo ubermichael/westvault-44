@@ -32,7 +32,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -326,8 +325,8 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
      * the file system in a temp file, and then serve it to the user agent.
      *
      * @Route("/original/{providerUuid}/{depositUuid}", name="original_deposit", requirements={
-     *      "providerUuid": ".{36}",
-     *      "depositUuid": ".{36}"
+     *     "providerUuid": ".{36}",
+     *     "depositUuid": ".{36}"
      * })
      *
      * @ParamConverter("provider", options={"mapping": {"provider_uuid": "uuid"}})
@@ -336,32 +335,32 @@ class SwordController extends AbstractController implements PaginatorAwareInterf
      * @return BinaryFileResponse
      */
     public function originalDepositAction(Request $request, Provider $provider, Deposit $deposit, SwordClient $swordClient) {
-        /* @var LoggerInterface */
+        // @var LoggerInterface
         $accepting = $this->checkAccess($provider->getUuid());
 
         $this->logger->notice("{$request->getClientIp()} - fetch deposit - {$provider->getUuid()} - {$deposit->getDepositUuid()} - accepting: " . ($accepting ? 'yes' : 'no'));
-        if (!$accepting) {
+        if ( ! $accepting) {
             throw new BadRequestHttpException('Not authorized to download deposits.');
         }
 
         $em = $this->getDoctrine()->getManager();
 
         if ($provider->getId() !== $deposit->getProvider()->getId()) {
-            throw new BadRequestHttpException( 'Deposit does not belong to provider.');
+            throw new BadRequestHttpException('Deposit does not belong to provider.');
         }
 
         $filepath = $swordClient->fetch($deposit);
-        if($filepath === null) {
-            throw new BadRequestHttpException("Unknown error occured during download. Please check the logs.");
+        if (null === $filepath) {
+            throw new BadRequestHttpException('Unknown error occured during download. Please check the logs.');
         }
-        if( !file_exists($filepath)) {
+        if ( ! file_exists($filepath)) {
             throw new BadRequestHttpException("Cannot find {$filepath}.");
         }
         $response = new BinaryFileResponse($filepath);
         $response->setContentDisposition('attachment', $deposit->getDepositUuid());
         $response->setStatusCode(Response::HTTP_OK);
         $response->deleteFileAfterSend(true);
+
         return $response;
     }
-
 }

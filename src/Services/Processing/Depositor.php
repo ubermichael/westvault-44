@@ -18,7 +18,7 @@ use App\Services\SwordClient;
  *
  * @see SwordClient
  */
-class Depositor {
+class Depositor extends AbstractProcessingService {
     /**
      * Sword client to talk to LOCKSSOMatic.
      *
@@ -42,5 +42,9 @@ class Depositor {
      */
     public function processDeposit(Deposit $deposit) {
         return $this->client->createDeposit($deposit);
+    }
+
+    public function setClient(SwordClient $client) : void {
+        $this->client = $client;
     }
 }

@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Blacklist;
-use App\Entity\Whitelist;
 use App\Form\BlacklistType;
 use App\Repository\BlacklistRepository;
 
@@ -103,6 +102,7 @@ class BlacklistController extends AbstractController implements PaginatorAwareIn
      */
     public function show(Blacklist $blacklist, ProviderRepository $repo) {
         $provider = $repo->findOneBy(['uuid' => $blacklist->getUuid()]);
+
         return [
             'blacklist' => $blacklist,
             'provider' => $provider,

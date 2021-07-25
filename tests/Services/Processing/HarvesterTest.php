@@ -19,7 +19,6 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
-use Psr\Http\Message\StreamInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -76,8 +75,12 @@ class HarvesterTest extends ControllerBaseCase {
         $this->assertSame(200, $response->getStatusCode());
     }
 
+    /**
+     * @group abc
+     */
     public function testDepositException() : void {
         $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Harvest download error ');
         $mock = new MockHandler([
             new Response(404),
         ]);

@@ -37,6 +37,7 @@ class BlackWhiteList {
      * Get an entry for the UUID.
      *
      * @param string $uuid
+     *
      * @return null|Blacklist|Whitelist
      */
     private function getEntry(ObjectRepository $repo, $uuid) {

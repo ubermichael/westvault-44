@@ -15,3 +15,4 @@ services:
 
     blackwhitelist: '@App\Services\BlackWhiteList'
     test.App\Services\DepositBuilder: '@App\Services\DepositBuilder'
+    test.App\Services\Processing\StatusChecker: '@App\Services\Processing\StatusChecker'

@@ -12,6 +12,7 @@ namespace App\Services\Processing;
 
 use App\Entity\Deposit;
 use App\Services\SwordClient;
+use Exception;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -20,7 +21,7 @@ use RecursiveIteratorIterator;
  *
  * @see SwordClient
  */
-class StatusChecker {
+class StatusChecker extends AbstractProcessingService {
     /**
      * Sword client to communicate with LOCKSS.
      *
@@ -71,9 +72,11 @@ class StatusChecker {
      * Updates the deposit status, and may remove the processing files if
      * LOCKSSOatic reports agreement.
      *
+     * @throws Exception
+     *
      * @return null|bool
      */
-    protected function processDeposit(Deposit $deposit) {
+    public function processDeposit(Deposit $deposit) {
         $this->logger->notice("Checking deposit {$deposit->getDepositUuid()}");
         $statement = $this->client->statement($deposit);
         $status = (string) $statement->xpath('//atom:category[@scheme="http://purl.org/net/sword/terms/state"]/@term')[0];

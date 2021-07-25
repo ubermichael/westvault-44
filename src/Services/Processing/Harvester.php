@@ -14,9 +14,8 @@ use App\Entity\Deposit;
 use App\Services\FilePaths;
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -25,7 +24,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * Attempts to check file sizes via HTTP HEAD before downloading, and checks
  * that there will be sufficient disk space.
  */
-class Harvester {
+class Harvester extends AbstractProcessingService {
     /**
      * Configuration for the harvester client.
      */
@@ -77,11 +76,6 @@ class Harvester {
      * @var FilePaths
      */
     private $filePaths;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
     /**
      * Construct the harvester.
@@ -140,16 +134,16 @@ class Harvester {
      * @param string $url
      *
      * @throws Exception
-     *                   If the HTTP status code isn't 200, throw an error.
+     * @throws GuzzleException
      *
-     * @return Response
+     * @return ResponseInterface
      */
     public function fetchDeposit($url) {
-        $response = $this->client->get($url);
+        $response = $this->client->get($url, ['http_errors' => false]);
         if (200 !== $response->getStatusCode()) {
             throw new Exception('Harvest download error '
-                    . "- {$url} - HTTP {$response->getHttpStatus()} "
-                    . "- {$response->getError()}");
+                    . "- {$url} - HTTP {$response->getStatusCode()} "
+                    . "- {$response->getBody()}");
         }
 
         return $response;
@@ -210,9 +204,5 @@ class Harvester {
 
             return false;
         }
-    }
-
-    public function setLogger(LoggerInterface $logger) {
-        $this->logger = $logger;
     }
 }

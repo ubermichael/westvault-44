@@ -11,10 +11,6 @@ declare(strict_types=1);
 namespace App\Tests\Services\Processing;
 
 use App\Services\Processing\VirusScanner;
-use App\Utilities\XmlParser;
-use DOMDocument;
-use DOMElement;
-use DOMXPath;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 use Socket\Raw\Factory;
 use Socket\Raw\Socket;

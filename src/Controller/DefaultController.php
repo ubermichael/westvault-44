@@ -13,7 +13,6 @@ namespace App\Controller;
 use App\Entity\Deposit;
 use App\Entity\Provider;
 use App\Entity\TermOfUse;
-use App\Repository\DocumentRepository;
 use App\Services\FilePaths;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -39,7 +38,7 @@ class DefaultController extends AbstractController implements PaginatorAwareInte
      * The LOCKSS permision statement, required for LOCKSS to harvest
      * content.
      */
-    const PERMISSION_STMT = 'LOCKSS system has permission to collect, preserve, and serve this Archival Unit.';
+    public const PERMISSION_STMT = 'LOCKSS system has permission to collect, preserve, and serve this Archival Unit.';
 
     /**
      * Home page action.

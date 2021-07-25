@@ -46,43 +46,20 @@ class DepositBuilder {
     /**
      * Build the URL for the deposit receipt.
      *
-     * @param Deposit $deposit
-     *
      * @return string
      */
-    public function buildDepositReceiptUrl(Deposit $deposit)
-    {
+    public function buildDepositReceiptUrl(Deposit $deposit) {
         return $this->generator->generate(
             'sword_statement',
-            array(
+            [
                 'provider_uuid' => $deposit->getProvider()->getUuid(),
                 'deposit_uuid' => $deposit->getDepositUuid(),
-            ),
+            ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
 
-    /**
-     * Find and return the deposit with $uuid or create a new deposit.
-     *
-     * @param string $uuid
-     *
-     * @return Deposit
-     */
-    protected function findDeposit($uuid) {
-        $deposit = $this->em->getRepository(Deposit::class)->findOneBy([
-            'depositUuid' => mb_strtoupper($uuid),
-        ]);
-        if ( ! $deposit) {
-            dump("DEPOSIT {$uuid} NOT FOUND.");
-            $deposit = new Deposit();
-            $deposit->setDepositUuid($uuid);
-        }
-
-        return $deposit;
-    }
-
-    public function update(Deposit $deposit, SimpleXMLElement $xml) {
+    public function update(Deposit $deposit, SimpleXMLElement $xml) : void {
         $deposit->setState('depositedByProvider');
         $deposit->setChecksumType(Xpath::getXmlValue($xml, 'pkp:content/@checksumType'));
         $deposit->setChecksumValue(Xpath::getXmlValue($xml, 'pkp:content/@checksumValue'));
@@ -108,6 +85,7 @@ class DepositBuilder {
         $deposit->setDepositUuid($uuid);
         $this->update($deposit, $xml);
         $this->em->persist($deposit);
+
         return $deposit;
     }
 }

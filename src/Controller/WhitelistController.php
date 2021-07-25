@@ -102,6 +102,7 @@ class WhitelistController extends AbstractController implements PaginatorAwareIn
      */
     public function show(Whitelist $whitelist, ProviderRepository $repo) {
         $provider = $repo->findOneBy(['uuid' => $whitelist->getUuid()]);
+
         return [
             'whitelist' => $whitelist,
             'provider' => $provider,

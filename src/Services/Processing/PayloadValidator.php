@@ -17,7 +17,7 @@ use Exception;
 /**
  * Validate the size and checksum of a downloaded deposit.
  */
-class PayloadValidator {
+class PayloadValidator extends AbstractProcessingService {
     /**
      * Buffer size for the hashing.
      */

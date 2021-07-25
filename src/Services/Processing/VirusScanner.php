@@ -12,11 +12,6 @@ namespace App\Services\Processing;
 
 use App\Entity\Deposit;
 use App\Services\FilePaths;
-use App\Utilities\XmlParser;
-use DOMElement;
-use DOMXPath;
-use PharData;
-use RecursiveIteratorIterator;
 use Socket\Raw\Factory;
 use Symfony\Component\Filesystem\Filesystem;
 use Xenolope\Quahog\Client;
@@ -24,7 +19,7 @@ use Xenolope\Quahog\Client;
 /**
  * Virus scanning service, via ClamAV.
  */
-class VirusScanner {
+class VirusScanner extends AbstractProcessingService {
     /**
      * Buffer size for extracting embedded files.
      */
@@ -113,10 +108,11 @@ class VirusScanner {
         $r = $client->scanFile($harvestedPath);
         if ('OK' === $r['status']) {
             $deposit->addToProcessingLog("Clam Scan Result {$basename} OK");
+
             return true;
-        } else {
-            $deposit->addToProcessingLog("Clam Scan Result {$basename} NOT OK {$r['status']}: {$r['reason']}");
-            return false;
         }
+        $deposit->addToProcessingLog("Clam Scan Result {$basename} NOT OK {$r['status']}: {$r['reason']}");
+
+        return false;
     }
 }
