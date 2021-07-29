@@ -41,6 +41,11 @@ services:
     blackwhitelist:
         class: App\Services\BlackWhiteList
 
+    monolog.formatter.request:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] [%%extra.ip%%] %%channel%%.%%level_name%%: %%message%%\n"
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -68,6 +73,10 @@ services:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
             - { name: doctrine.event_listener, event: preRemove }
+
+    App\Logger\RequestProcessor:
+        tags:
+            - { name: monolog.processor }
 
     App\Menu\Builder:
         tags:

@@ -12,10 +12,9 @@
 
     Use it like so:
 
-    php -d zend_extension=xdebug.so -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.coverage.xml
+    XDEBUG_MODE=coverage ./vendor/bin/phpunit -c phpunit.coverage.xml
   -->
   <php>
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
     <ini name="error_reporting" value="-1"/>
     <ini name="memory_limit" value="-1"/>
     <ini name="zend_extension" value="xdebug.so"/>
@@ -24,15 +23,19 @@
     <server name="SHELL_VERBOSITY" value="-1"/>
   </php>
 
+  <groups>
+    <exclude>
+      <group>virusscanner</group>
+    </exclude>
+  </groups>
+
   <coverage processUncoveredFiles="true" cacheDirectory="var/cache/test/coverage">
     <include>
       <directory suffix=".php">src</directory>
     </include>
     <exclude>
       <directory>src/DataFixtures</directory>
-      <directory>vendor</directory>
       <file>src/Kernel.php</file>
-      <file>src/.preload.php</file>
     </exclude>
     <report>
       <html outputDirectory="public/dev/coverage"/>
@@ -46,6 +49,5 @@
   </testsuites>
   <listeners>
     <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-    <listener class="Symfony\Bridge\PhpUnit\CoverageListener" />
   </listeners>
 </phpunit>

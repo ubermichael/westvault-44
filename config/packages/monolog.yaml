@@ -1,5 +1,5 @@
 monolog:
-    channels: [ 'sword', 'lockss', 'processing' ]
+    channels: [ 'sword', 'lockss' ]
     handlers:
         main:
             type: rotating_file
@@ -7,22 +7,18 @@ monolog:
             level: warning
             channels: ["!event", "!doctrine", "!console", "!lockss", "!sword"]
             max_files: 30
+            formatter: monolog.formatter.request
         lockss:
             level: notice
             type: rotating_file
             path: '%kernel.logs_dir%/lockss-%kernel.environment%.log'
             channels: [ 'lockss' ]
             max_files: 30
+            formatter: monolog.formatter.request
         sword:
             level: notice
             type: rotating_file
             path: '%kernel.logs_dir%/sword-%kernel.environment%.log'
             channels: [ 'sword' ]
             max_files: 30
-        processing:
-            level: notice
-            type: rotating_file
-            path: '%kernel.logs_dir%/processing-%kernel.environment%.log'
-            channels: [ 'processing' ]
-            max_files: 30
-
+            formatter: monolog.formatter.request
