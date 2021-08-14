@@ -81,6 +81,7 @@ services:
     App\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
+            - { name: knp_menu.menu_builder, method: devMenu, alias: dev}
 
     App\Services\FilePaths:
         arguments:

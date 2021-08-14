@@ -29,6 +29,9 @@
                     </button>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ path('homepage') }}">Home</a></li>
+                    </ul>
                     {{ knp_menu_render('main') }}
                     {% set user_menu = knp_menu_get('nines_user_nav', [], {'name': 'Admin'}) %}
                     {{ knp_menu_render(user_menu) }}
@@ -59,10 +62,24 @@
 
         <footer class="footer">
             <div class="container">
-                <div class='col-md-12'>
-                    <p><strong>WestVault PLN</strong>
+                <div class='col-sm-6'>
+                    <p><strong>WestVault PLN</strong><br/>
+                        Terms of Use:
+                            <a href='{{ path('feed_terms', {'_format': 'rss'}) }}'>RSS</a> |
+                            <a href='{{ path('feed_terms', {'_format': 'atom'}) }}'>Atom</a> |
+                            <a href='{{ path('feed_terms', {'_format': 'json'}) }}'>JSON</a>
                     </p>
                 </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                <div class='col-sm-6'>
+                    <p><strong>Dev</strong><br/>
+                        <a href='{{ path('sword_service_document') }}'>SWORD SD</a> |
+                        <a href='{{ path('lockss_permission') }}'>LOCKSS Permission</a> |
+                        <a href='{{ asset('dev/coverage/index.html') }}'>Coverage</a> |
+                        <a href='https://github.com/coppul/westvault-44'>GitHub</a>
+                    </p>
+                </div>
+                {% endif %}
             </div>
         </footer>
 

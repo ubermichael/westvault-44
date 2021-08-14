@@ -14,6 +14,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -71,22 +72,16 @@ class Builder implements ContainerAwareInterface {
     /**
      * Build the app's main navigation menu.
      *
-     * @return ItemInterface
+     * @return ?ItemInterface
      */
     public function mainMenu(array $options) {
+        if( ! $this->hasRole('ROLE_USER')) {
+            return null;
+        }
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes([
             'class' => 'nav navbar-nav',
         ]);
-
-        $menu->addChild('home', [
-            'label' => 'Home',
-            'route' => 'homepage',
-        ]);
-
-        if ( ! $this->hasRole('ROLE_USER')) {
-            return $menu;
-        }
 
         $browse = $menu->addChild('browse', [
             'uri' => '#',
