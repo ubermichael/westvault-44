@@ -31,6 +31,7 @@ class StatusCheckerTest extends ControllerBaseCase {
     }
 
     public function testProcessDeposit() : void {
+        $this->assertTrue(true);
     }
 
     protected function setup() : void {
